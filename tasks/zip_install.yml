@@ -1,0 +1,24 @@
+---
+- name: Download Tomcat
+  get_url:
+    url: "{{tomcat_zip_url}}"
+    dest: "{{stage_dir}}/{{tomcat_inst_name}}.zip"
+    checksum: "{{tomcat_zip_hash}}"
+
+# The root of the Tomcat zip is a directory. This directory might not be
+# what we want to name the Tomcat root. To accomodate this we first unarchive
+# to a temporary directory in the staging area. We then move the directory
+# the zip created to it's destination and possibly rename it.
+- name: Create temporary staging area
+  file:
+    path: "{{stage_dir}}/tmp"
+    state: directory
+
+- name: Unzip Tomcat
+  unarchive:
+    src: "{{stage_dir}}/{{tomcat_inst_name}}.zip"
+    dest: "{{stage_dir}}/tmp"
+    copy: no
+
+- name: Deploy Tomcat
+  command: mv "{{stage_dir}}/tmp/{{tomcat_zip_root_dir}}" "{{tomcat_root}}"

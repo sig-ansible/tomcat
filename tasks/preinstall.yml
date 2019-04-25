@@ -1,0 +1,5 @@
+---
+- include_tasks: detect_timezone.yml
+  when: current_timezone is not defined
+
+- include_tasks: "preinstall_{{ansible_pkg_mgr}}.yml"

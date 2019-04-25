@@ -1,0 +1,20 @@
+---
+- name: Check if timedatectl is present
+  stat:
+    path: /usr/bin/timedatectl
+  register: stat_res
+
+- name: Determine system timezone
+  shell: "timedatectl status |grep 'Time zone' |cut -d ':' -f 2 |cut -d '(' -f 1 |sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/_/ /g'"
+  register: res
+  changed_when: False
+  check_mode: no
+
+- set_fact: current_timezone={{res.stdout}}
+
+- fail:
+    msg: Unable to detect timezone. You must specify the current_timezone var
+  when: current_timezone is not defined
+
+- debug:
+    msg: "Timezone detected: {{current_timezone}} - This can be overidden with the current_timezone variable"

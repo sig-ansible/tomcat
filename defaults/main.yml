@@ -1,0 +1,44 @@
+---
+# This dictionary defines the defaults for various versions.
+#   * Always use SHA1 hashes because they're available on all platforms
+#   * Never use a file from "webapps" in the create variable
+tomcat_versions:
+  8.5.4:
+    zip_url: http://r.sigcorp.com/foss_artifacts/apache-tomcat-8.5.4.zip
+    zip_hash: sha1:95fcdb9f428e30f17cbb634815770450d991cbb9
+    zip_root_dir: apache-tomcat-8.5.4
+    creates: lib/websocket-api.jar
+
+  8.5.40:
+    zip_url: http://mirrors.advancedhosters.com/apache/tomcat/tomcat-8/v8.5.40/bin/apache-tomcat-8.5.40.zip
+    zip_hash: sha1:80a82a8838966cef682dd29a2e49f6a97e1ac654
+    zip_root_dir: apache-tomcat-8.5.40
+    creates: lib/websocket-api.jar
+
+tomcat_version: 8.5.40
+tomcat_zip_url: "{{tomcat_versions[tomcat_version].zip_url}}"
+tomcat_zip_hash: "{{tomcat_versions[tomcat_version].zip_hash}}"
+tomcat_creates: "{{tomcat_versions[tomcat_version].creates}}"
+tomcat_zip_root_dir: "{{tomcat_versions[tomcat_version].zip_root_dir}}"
+tomcat_inst_name: "{{tomcat_versions[tomcat_version].zip_root_dir}}"
+
+tomcat_root: /opt/{{tomcat_inst_name}}
+tomcat_service_name: tomcat
+tomcat_user: tomcat
+tomcat_group: tomcat
+
+# We need to specify a timezone for Tomcat because of a bug in Oracle's JDBC
+# driver which causes it to throw ORA-01882: timezone region  not found
+tomcat_timezone: "{{current_timezone}}"
+
+tomcat_urandom: yes
+tomcat_memory_args: "-Xms512M -Xmx1024M"
+tomcat_java_opts: "-Djava.awt.headless=true '-Duser.timezone={{tomcat_timezone}}'"
+tomcat_catalina_opts: "{{tomcat_memory_args}} {{ '-Djava.security.egd=file:/dev/../dev/urandom' if tomcat_urandom else '' }} -server -XX:+UseParallelGC"
+
+tomcat_remove_delivered_apps: yes
+tomcat_delivered_apps:
+  - docs
+  - examples
+  - host-manager
+  - ROOT

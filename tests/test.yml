@@ -1,0 +1,16 @@
+---
+- hosts: all
+  become: yes
+  become_user: root
+
+  vars:
+    stage_dir: /tmp
+    tomcat_java_home: /usr/lib/jvm/jre-1.8.0
+
+  pre_tasks:
+    - name: Install OpenJDK 8
+      yum:
+        name: java-1.8.0-openjdk
+
+  roles:
+    - tomcat

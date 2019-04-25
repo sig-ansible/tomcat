@@ -1,0 +1,67 @@
+---
+- include_tasks: preinstall.yml
+
+- name: Create Tomcat group
+  group: name="{{tomcat_group}}"
+
+- name: Create Tomcat user
+  user:
+    name: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
+    shell: /sbin/nologin
+
+- name: Check for deployment
+  stat: path="{{tomcat_root}}/{{tomcat_creates}}"
+  register: res
+
+- include_tasks: zip_install.yml
+  when: not res.stat.exists
+
+- name: Remove Tomcat-delivered webapps
+  file:
+    path: "{{tomcat_root}}/webapps/{{item}}"
+    state: absent
+  with_items: "{{tomcat_delivered_apps}}"
+  when: tomcat_remove_delivered_apps
+
+- name: Find Tomcat scripts
+  find: paths="{{tomcat_root}}/bin" patterns="*.sh"
+  register: tomcat_bin_res
+
+- name: Make Tomcat scripts executable
+  file:
+    path: "{{item.path}}"
+    mode: "0755"
+  with_items: "{{tomcat_bin_res.files}}"
+
+- name: Configure Tomcat environment
+  template:
+    src: setenv.sh
+    dest: "{{tomcat_root}}/bin"
+    mode: "0755"
+
+- name: Set permissions for Tomcat directories
+  file:
+    path: "{{tomcat_root}}/{{item}}"
+    state: directory
+    owner: "{{tomcat_user}}"
+    mode: "0755"
+  with_items:
+    - logs
+    - conf
+    - webapps
+    - temp
+    - work
+
+# - name: Create Upstart Service
+#   template:
+#     src: tomcat_upstart.conf
+#     dest: /etc/init/{{tomcat_service_name}}.conf
+#   when: ansible_service_mgr == 'upstart'
+
+- name: Create Systemd Service
+  template:
+    src: tomcat_systemd.conf
+    dest: /etc/systemd/system/{{tomcat_service_name}}.service
+  when: ansible_service_mgr == 'systemd'
+  notify: reload systemd
