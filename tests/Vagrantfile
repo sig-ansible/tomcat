@@ -18,7 +18,8 @@ Vagrant.configure(2) do |config|
   # Run Ansible
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "test.yml"
-    #ansible.vault_password_file = "../../vault_from_env.sh"
-    #ansible.verbose = "vvv"
+    # ansible.tags = "debug"
+    # ansible.vault_password_file = "../../vault_from_env.sh"
+    # ansible.verbose = "vvv"
   end
 end

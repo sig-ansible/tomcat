@@ -1,0 +1,24 @@
+---
+- name: Set shutdown port
+  xml:
+    path: "{{tomcat_root}}/conf/server.xml"
+    xpath: /Server
+    attribute: port
+    value: "{{tomcat_shutdown_port}}"
+    backup: yes
+
+- name: Set HTTP port
+  xml:
+    path: "{{tomcat_root}}/conf/server.xml"
+    xpath: /Server/Service/Connector[starts-with(@protocol,'HTTP/')]
+    attribute: port
+    value: "{{tomcat_http_port}}"
+    backup: yes
+
+- name: Set AJP port
+  xml:
+    path: "{{tomcat_root}}/conf/server.xml"
+    xpath: /Server/Service/Connector[starts-with(@protocol,'AJP/')]
+    attribute: port
+    value: "{{tomcat_ajp_port}}"
+    backup: yes

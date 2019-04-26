@@ -70,6 +70,9 @@
     - temp
     - work
 
+- include_tasks: server_xml.yml
+  when: tomcat_manage_server_xml
+
 # - name: Create Upstart Service
 #   template:
 #     src: tomcat_upstart.conf

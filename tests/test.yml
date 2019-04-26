@@ -20,3 +20,4 @@
 
     - name: tomcat
       tomcat_service_name: tomcat_b
+      tomcat_port_offset: 1000
