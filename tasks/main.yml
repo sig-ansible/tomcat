@@ -2,11 +2,14 @@
 - include_tasks: preinstall.yml
 
 - name: Create Tomcat group
-  group: name="{{tomcat_group}}"
+  group:
+    name: "{{tomcat_group}}"
+    gid: "{{tomcat_gid|default(omit)}}"
 
 - name: Create Tomcat user
   user:
     name: "{{tomcat_user}}"
+    uid: "{{tomcat_uid|default(omit)}}"
     group: "{{tomcat_group}}"
     shell: /sbin/nologin
 
