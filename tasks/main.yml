@@ -11,7 +11,7 @@
     name: "{{tomcat_user}}"
     uid: "{{tomcat_uid|default(omit)}}"
     group: "{{tomcat_group}}"
-    shell: /sbin/nologin
+    shell: "{{tomcat_user_shell}}"
 
 - name: Create tomcat base directory
   file:
