@@ -13,12 +13,26 @@
     group: "{{tomcat_group}}"
     shell: /sbin/nologin
 
+- name: Create tomcat base directory
+  file:
+    path: "{{tomcat_base}}"
+    state: directory
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
+    mode: "0755"
+
 - name: Check for deployment
   stat: path="{{tomcat_root}}/{{tomcat_creates}}"
   register: res
 
 - include_tasks: zip_install.yml
   when: not res.stat.exists
+
+- name: Create service symlink
+  file:
+    src: "{{tomcat_root}}"
+    dest: "{{tomcat_root_symlink}}"
+    state: link
 
 - name: Remove Tomcat-delivered webapps
   file:

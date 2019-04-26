@@ -6,6 +6,8 @@
   vars:
     stage_dir: /tmp
     tomcat_java_home: /usr/lib/jvm/jre-1.8.0
+    tomcat_uid: 601
+    tomcat_gid: 601
 
   pre_tasks:
     - name: Install OpenJDK 8
@@ -13,4 +15,8 @@
         name: java-1.8.0-openjdk
 
   roles:
-    - tomcat
+    - name: tomcat
+      tomcat_service_name: tomcat_a
+
+    - name: tomcat
+      tomcat_service_name: tomcat_b

@@ -20,10 +20,12 @@ tomcat_zip_url: "{{tomcat_versions[tomcat_version].zip_url}}"
 tomcat_zip_hash: "{{tomcat_versions[tomcat_version].zip_hash}}"
 tomcat_creates: "{{tomcat_versions[tomcat_version].creates}}"
 tomcat_zip_root_dir: "{{tomcat_versions[tomcat_version].zip_root_dir}}"
-tomcat_inst_name: "{{tomcat_versions[tomcat_version].zip_root_dir}}"
-
-tomcat_root: /opt/{{tomcat_inst_name}}
 tomcat_service_name: tomcat
+tomcat_inst_name: "{{tomcat_service_name}}-{{tomcat_version}}"
+
+tomcat_base: /opt/tomcat
+tomcat_root: "{{tomcat_base}}/{{tomcat_inst_name}}"
+tomcat_root_symlink: "{{tomcat_base}}/{{tomcat_service_name}}"
 tomcat_user: tomcat
 tomcat_group: tomcat
 
