@@ -1,0 +1,13 @@
+---
+- name: List file handlers from Tomcat log configuration
+  shell: grep '^handlers\s*=' {{tomcat_root}}/conf/logging.properties |cut -d '=' -f 2 |sed -e 's/,\s*/\n/g' |sed -e 's/ *//g' |grep juli.AsyncFileHandler
+  register: handler_res
+  changed_when: no
+
+- name: Set log retention period for Tomcat
+  lineinfile:
+    path: "{{tomcat_root}}/conf/logging.properties"
+    regexp: "^{{item}}.maxDays\\s*="
+    line: "{{item}}.maxDays = {{tomcat_log_retain_days}}"
+    backup: yes
+  with_items: "{{handler_res.stdout_lines}}"

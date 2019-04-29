@@ -18,7 +18,7 @@ galaxy_info:
   # - CC-BY
   license: BSD
 
-  min_ansible_version: 2.1
+  min_ansible_version: 2.4
 
   platforms:
   - name: Amazon

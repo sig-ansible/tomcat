@@ -45,6 +45,9 @@ tomcat_http_port: "{{8080 + tomcat_port_offset|int}}"
 tomcat_shutdown_port: "{{8005 + tomcat_port_offset|int}}"
 tomcat_ajp_port: "{{8009 + tomcat_port_offset|int}}"
 
+tomcat_manage_logging: yes
+tomcat_log_retain_days: 30
+
 tomcat_remove_delivered_apps: yes
 tomcat_delivered_apps:
   - docs
