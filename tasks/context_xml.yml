@@ -1,0 +1,7 @@
+---
+- name: Add Tomcat resource links
+  tomcat_resource_link:
+    catalina_home: "{{tomcat_root}}"
+    name: "{{item.name}}"
+    global_name: "{{item.global_name}}"
+  with_items: "{{tomcat_resource_links}}"

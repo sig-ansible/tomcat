@@ -73,6 +73,12 @@
 - include_tasks: server_xml.yml
   when: tomcat_manage_server_xml
 
+- include_tasks: context_xml.yml
+  when: tomcat_manage_context_xml
+
+- include_tasks: tomcat_users_xml.yml
+  when: tomcat_manage_tomcat_users_xml
+
 - include_tasks: logging.yml
   when: tomcat_manage_logging
 

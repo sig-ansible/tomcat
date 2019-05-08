@@ -1,0 +1,9 @@
+---
+- name: Add Tomcat users
+  tomcat_user:
+    catalina_home: "{{tomcat_root}}"
+    name: "{{item.name}}"
+    password: "{{item.password}}"
+    roles: "{{item.roles}}"
+    append: "{{item.append}}"
+  with_items: "{{tomcat_users}}"

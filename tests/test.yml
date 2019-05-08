@@ -19,6 +19,34 @@
   roles:
     - name: tomcat
       tomcat_service_name: tomcat_a
+      tomcat_resources:
+        - name: someResource
+          attrs:
+            auth: Container
+            defaultAutoCommit: true
+            driverClassName: oracle.jdbc.OracleDriver
+            initialSize: 10
+            maxIdle: 10
+            maxTotal: 100
+            maxWaitMillis: 30000
+            minIdle: 10
+            password: somepassword
+            testOnBorrow: true
+            testWhileIdle: true
+            timeBetweenEvictionRunsMillis: 1800000
+            type: javax.sql.DataSource
+            url: jdbc:oracle:thin:@localhost:1521:ASID
+            username: dwschema
+            validationQuery: select * from dual
+            validationQueryTimeout: 300"
+      tomcat_resource_links:
+        - name: someResource
+          global_name: someGlobalName
+      tomcat_users:
+        - name: someguy
+          password: somepassword
+          roles: arole,somerole
+          append: yes
 
     - name: tomcat
       tomcat_service_name: tomcat_b

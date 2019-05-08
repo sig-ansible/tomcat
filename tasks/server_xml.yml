@@ -22,3 +22,10 @@
     attribute: port
     value: "{{tomcat_ajp_port}}"
     backup: yes
+
+- name: Add Tomcat resources
+  tomcat_resource:
+    catalina_home: "{{tomcat_root}}"
+    name: "{{item.name}}"
+    attrs: "{{item.attrs}}"
+  with_items: "{{tomcat_resources}}"
