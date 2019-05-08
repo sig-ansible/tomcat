@@ -3,26 +3,26 @@
 
 - name: Create Tomcat group
   group:
-    name: "{{tomcat_group}}"
-    gid: "{{tomcat_gid|default(omit)}}"
+    name: "{{ tomcat_group }}"
+    gid: "{{ tomcat_gid|default(omit) }}"
 
 - name: Create Tomcat user
   user:
-    name: "{{tomcat_user}}"
-    uid: "{{tomcat_uid|default(omit)}}"
-    group: "{{tomcat_group}}"
-    shell: "{{tomcat_user_shell}}"
+    name: "{{ tomcat_user }}"
+    uid: "{{ tomcat_uid|default(omit) }}"
+    group: "{{ tomcat_group }}"
+    shell: "{{ tomcat_user_shell }}"
 
 - name: Create tomcat base directory
   file:
-    path: "{{tomcat_base}}"
+    path: "{{ tomcat_base }}"
     state: directory
-    owner: "{{tomcat_user}}"
-    group: "{{tomcat_group}}"
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
     mode: "0755"
 
 - name: Check for deployment
-  stat: path="{{tomcat_root}}/{{tomcat_creates}}"
+  stat: path="{{ tomcat_root }}/{{ tomcat_creates }}"
   register: res
 
 - include_tasks: zip_install.yml
@@ -30,38 +30,38 @@
 
 - name: Create service symlink
   file:
-    src: "{{tomcat_root}}"
-    dest: "{{tomcat_root_symlink}}"
+    src: "{{ tomcat_root }}"
+    dest: "{{ tomcat_root_symlink }}"
     state: link
 
 - name: Remove Tomcat-delivered webapps
   file:
-    path: "{{tomcat_root}}/webapps/{{item}}"
+    path: "{{ tomcat_root  }}/webapps/{{ item }}"
     state: absent
-  with_items: "{{tomcat_delivered_apps}}"
+  with_items: "{{ tomcat_delivered_apps }}"
   when: tomcat_remove_delivered_apps
 
 - name: Find Tomcat scripts
-  find: paths="{{tomcat_root}}/bin" patterns="*.sh"
+  find: paths="{{ tomcat_root }}/bin" patterns="*.sh"
   register: tomcat_bin_res
 
 - name: Make Tomcat scripts executable
   file:
-    path: "{{item.path}}"
+    path: "{{ item.path }}"
     mode: "0755"
-  with_items: "{{tomcat_bin_res.files}}"
+  with_items: "{{ tomcat_bin_res.files }}"
 
 - name: Configure Tomcat environment
   template:
     src: setenv.sh
-    dest: "{{tomcat_root}}/bin"
+    dest: "{{ tomcat_root }}/bin"
     mode: "0755"
 
 - name: Set permissions for Tomcat directories
   file:
-    path: "{{tomcat_root}}/{{item}}"
+    path: "{{ tomcat_root }}/{{ item }}"
     state: directory
-    owner: "{{tomcat_user}}"
+    owner: "{{ tomcat_user }}"
     mode: "0755"
   with_items:
     - logs
@@ -84,20 +84,20 @@
 
 - name: Add jars to Tomcat
   copy:
-    src: "{{item}}"
-    dest: "{{tomcat_root}}/lib/"
+    src: "{{ item }}"
+    dest: "{{ tomcat_root }}/lib/"
     remote_src: yes
-  with_items: "{{tomcat_add_jars}}"
+  with_items: "{{ tomcat_add_jars }}"
 
 # - name: Create Upstart Service
 #   template:
 #     src: tomcat_upstart.conf
-#     dest: /etc/init/{{tomcat_service_name}}.conf
+#     dest: /etc/init/{{ tomcat_service_name }}.conf
 #   when: ansible_service_mgr == 'upstart'
 
 - name: Create Systemd Service
   template:
     src: tomcat_systemd.conf
-    dest: /etc/systemd/system/{{tomcat_service_name}}.service
+    dest: /etc/systemd/system/{{ tomcat_service_name }}.service
   when: ansible_service_mgr == 'systemd'
   notify: reload systemd

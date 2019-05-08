@@ -1,6 +1,6 @@
 ---
 - name: Install required yum packages
   yum:
-    name: "{{item}}"
+    name: "{{ item }}"
   with_items:
     - unzip

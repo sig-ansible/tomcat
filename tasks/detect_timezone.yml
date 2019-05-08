@@ -10,11 +10,11 @@
   changed_when: False
   check_mode: no
 
-- set_fact: current_timezone={{res.stdout}}
+- set_fact: current_timezone={{ res.stdout }}
 
 - fail:
     msg: Unable to detect timezone. You must specify the current_timezone var
   when: current_timezone is not defined
 
 - debug:
-    msg: "Timezone detected: {{current_timezone}} - This can be overidden with the current_timezone variable"
+    msg: "Timezone detected: {{ current_timezone }} - This can be overidden with the current_timezone variable"
