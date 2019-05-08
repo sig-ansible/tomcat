@@ -10,6 +10,7 @@
     tomcat_gid: 601
     tomcat_add_jars:
       - /mnt/artifacts/ojdbc7.jar
+    tomcat_log_retain_days: 1
 
   pre_tasks:
     - name: Install OpenJDK 8

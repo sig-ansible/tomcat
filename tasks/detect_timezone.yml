@@ -5,14 +5,18 @@
   register: stat_res
 
 - name: Determine system timezone
-  shell: "timedatectl status |grep 'Time zone' |cut -d ':' -f 2 |cut -d '(' -f 1 |sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/_/ /g'"
+  shell: |
+    set -o pipefail
+    timedatectl status |grep 'Time zone' |cut -d ':' -f 2 |cut -d '(' -f 1 |sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/_/ /g'
   register: res
   changed_when: False
   check_mode: no
 
-- set_fact: current_timezone={{ res.stdout }}
+- name: Set current_timezone
+  set_fact: current_timezone={{ res.stdout }}
 
-- fail:
+- name: Validate current_timezone
+  fail:
     msg: Unable to detect timezone. You must specify the current_timezone var
   when: current_timezone is not defined
 

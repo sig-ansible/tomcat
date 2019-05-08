@@ -1,6 +1,8 @@
 ---
 - name: List file handlers from Tomcat log configuration
-  shell: grep '^handlers\s*=' {{ tomcat_root }}/conf/logging.properties |cut -d '=' -f 2 |sed -e 's/,\s*/\n/g' |sed -e 's/ *//g' |grep juli.AsyncFileHandler
+  shell: |
+    set -o pipefail
+    grep '^handlers\s*=' {{ tomcat_root }}/conf/logging.properties |cut -d '=' -f 2 |sed -e 's/,\s*/\n/g' |sed -e 's/ *//g' |grep juli.AsyncFileHandler
   register: handler_res
   changed_when: no
 
