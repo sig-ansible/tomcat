@@ -76,6 +76,13 @@
 - include_tasks: logging.yml
   when: tomcat_manage_logging
 
+- name: Add jars to Tomcat
+  copy:
+    src: "{{item}}"
+    dest: "{{tomcat_root}}/lib/"
+    remote_src: yes
+  with_items: "{{tomcat_add_jars}}"
+
 # - name: Create Upstart Service
 #   template:
 #     src: tomcat_upstart.conf

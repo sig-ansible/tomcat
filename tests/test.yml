@@ -8,6 +8,8 @@
     tomcat_java_home: /usr/lib/jvm/jre-1.8.0
     tomcat_uid: 601
     tomcat_gid: 601
+    tomcat_add_jars:
+      - /mnt/artifacts/ojdbc7.jar
 
   pre_tasks:
     - name: Install OpenJDK 8

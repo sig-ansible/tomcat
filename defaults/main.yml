@@ -54,3 +54,5 @@ tomcat_delivered_apps:
   - examples
   - host-manager
   - ROOT
+
+tomcat_add_jars: []

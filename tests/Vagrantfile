@@ -12,8 +12,9 @@ Vagrant.configure(2) do |config|
     #vb.gui = true
   end
 
-  # config.vm.network "forwarded_port", guest: 28778, host: 28778
-  # config.vm.synced_folder "/Users/dboitnot/projects/logiodh", "/mnt/logiodh"
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.network "forwarded_port", guest: 9080, host: 9080
+  config.vm.synced_folder "artifacts", "/mnt/artifacts"
 
   # Run Ansible
   config.vm.provision "ansible" do |ansible|
