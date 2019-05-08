@@ -101,3 +101,9 @@
     dest: /etc/systemd/system/{{ tomcat_service_name }}.service
   when: ansible_service_mgr == 'systemd'
   notify: reload systemd
+
+- name: Add Tomcat about info
+  template:
+    src: about.j2
+    dest: "{{ about_root }}/tomcat{{ tomcat_service_name }}.txt"
+  when: about_enabled | default(False)
