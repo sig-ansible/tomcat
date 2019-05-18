@@ -40,6 +40,7 @@ tomcat_java_opts: "-Djava.awt.headless=true '-Duser.timezone={{tomcat_timezone}}
 tomcat_catalina_opts: "{{tomcat_memory_args}} {{ '-Djava.security.egd=file:/dev/../dev/urandom' if tomcat_urandom else '' }} -server -XX:+UseParallelGC"
 
 tomcat_manage_server_xml: yes
+tomcat_server_xml_path: "{{ tomcat_root }}/conf/server.xml"
 tomcat_manage_context_xml: yes
 tomcat_manage_tomcat_users_xml: yes
 tomcat_port_offset: 0

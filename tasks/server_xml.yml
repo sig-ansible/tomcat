@@ -1,26 +1,29 @@
 ---
 - name: Set shutdown port
   xml:
-    path: "{{ tomcat_root }}/conf/server.xml"
+    path: "{{ tomcat_server_xml_path }}"
     xpath: /Server
     attribute: port
     value: "{{ tomcat_shutdown_port|string }}"
+    pretty_print: yes
     backup: yes
 
 - name: Set HTTP port
   xml:
-    path: "{{ tomcat_root }}/conf/server.xml"
+    path: "{{ tomcat_server_xml_path }}"
     xpath: /Server/Service/Connector[starts-with(@protocol,'HTTP/')]
     attribute: port
     value: "{{ tomcat_http_port|string }}"
+    pretty_print: yes
     backup: yes
 
 - name: Set AJP port
   xml:
-    path: "{{ tomcat_root }}/conf/server.xml"
+    path: "{{ tomcat_server_xml_path }}"
     xpath: /Server/Service/Connector[starts-with(@protocol,'AJP/')]
     attribute: port
     value: "{{ tomcat_ajp_port|string }}"
+    pretty_print: yes
     backup: yes
 
 - name: Add Tomcat resources

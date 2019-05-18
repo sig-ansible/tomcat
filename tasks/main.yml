@@ -65,15 +65,19 @@
 
 - include_tasks: server_xml.yml
   when: tomcat_manage_server_xml
+  tags: always
 
 - include_tasks: context_xml.yml
   when: tomcat_manage_context_xml
+  tags: always
 
 - include_tasks: tomcat_users_xml.yml
   when: tomcat_manage_tomcat_users_xml
+  tags: always
 
 - include_tasks: logging.yml
   when: tomcat_manage_logging
+  tags: always
 
 - name: Add jars to Tomcat
   copy:
