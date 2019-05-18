@@ -24,3 +24,10 @@
   command: mv "{{ stage_dir }}/tmp/{{ tomcat_zip_root_dir }}" "{{ tomcat_root }}"
   when: true # This whole file only gets executed when there's something to do.
              # We use the when:true to satisfy the linting tool.
+
+- name: Remove Tomcat-delivered webapps
+  file:
+    path: "{{ tomcat_root  }}/webapps/{{ item }}"
+    state: absent
+  with_items: "{{ tomcat_delivered_apps }}"
+  when: tomcat_remove_delivered_apps

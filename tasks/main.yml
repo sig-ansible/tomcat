@@ -34,13 +34,6 @@
     dest: "{{ tomcat_root_symlink }}"
     state: link
 
-- name: Remove Tomcat-delivered webapps
-  file:
-    path: "{{ tomcat_root  }}/webapps/{{ item }}"
-    state: absent
-  with_items: "{{ tomcat_delivered_apps }}"
-  when: tomcat_remove_delivered_apps
-
 - name: Find Tomcat scripts
   find: paths="{{ tomcat_root }}/bin" patterns="*.sh"
   register: tomcat_bin_res
