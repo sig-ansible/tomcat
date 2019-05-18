@@ -1,4 +1,6 @@
 ---
+# TODO: Make a single backup instead of using per-task backups
+
 - name: Set shutdown port
   xml:
     path: "{{ tomcat_server_xml_path }}"
@@ -32,3 +34,40 @@
     name: "{{ item.name }}"
     attrs: "{{ item.attrs }}"
   with_items: "{{ tomcat_resources }}"
+
+- name: Remove SSL connector
+  xml:
+    path: "{{ tomcat_server_xml_path }}"
+    pretty_print: yes
+    backup: yes
+    xpath: /Server/Service/Connector[@SSLEnabled="true"]
+    state: absent
+  when: not tomcat_ssl_enabled
+  tags: debug
+
+- name: Set SSL connector parameters
+  xml:
+    path: "{{ tomcat_server_xml_path }}"
+    pretty_print: yes
+    backup: yes
+    xpath: /Server/Service/Connector[@SSLEnabled="true"]
+    attribute: "{{ item.key }}"
+    value: "{{ item.value }}"
+  with_dict:
+    port: "{{ tomcat_https_port }}"
+    protocol: "{{ tomcat_ssl_protocol }}"
+    maxThreads: "{{ tomcat_ssl_max_threads }}"
+  when: tomcat_ssl_enabled
+  tags: debug
+
+- name: Set certificate configuration configuration
+  xml:
+    path: "{{ tomcat_server_xml_path }}"
+    pretty_print: yes
+    backup: yes
+    xpath: /Server/Service/Connector/SSLHostConfig/Certificate
+    attribute: "{{ item.key }}"
+    value: "{{ item.value }}"
+  with_dict: "{{ tomcat_ssl_cert_attrs }}"
+  when: tomcat_ssl_enabled
+  tags: debug

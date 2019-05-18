@@ -1,0 +1,50 @@
+---
+- name: Install packages for pip (required to generate certificate)
+  yum:
+    name:
+      - python-setuptools
+      - python-devel
+      - gcc
+  tags: debug
+
+- name: Install Pip
+  easy_install: name=pip
+  tags: debug
+
+- name: Install PyOpenSSL
+  pip: name=pyOpenSSL
+  tags: debug
+
+- name: Set facts for self-signed cert
+  set_fact:
+    tomcat_ssl_enabled: yes
+    tomcat_ssl_cert_attrs:
+      certificateKeyFile: "conf/self-signed-key.pem"
+      certificateFile: "conf/self-signed-cert.pem"
+  tags: debug
+
+- name: Generate an OpenSSL private key
+  openssl_privatekey:
+    path: "{{ tomcat_root }}/conf/self-signed-key.pem"
+    owner: root
+    group: "{{ tomcat_group }}"
+    mode: "0640"
+  tags: debug
+
+- name: Generate an OpenSSL CSR
+  openssl_csr:
+    path: "{{ tomcat_root }}/conf/self-signed.csr"
+    privatekey_path: "{{ tomcat_root }}/conf/self-signed-key.pem"
+    common_name: "{{ ansible_hostname }}"
+  tags: debug
+
+- name: Generate a self-signed OpenSSL certificate
+  openssl_certificate:
+    path: "{{ tomcat_root }}/conf/self-signed-cert.pem"
+    privatekey_path: "{{ tomcat_root }}/conf/self-signed-key.pem"
+    csr_path: "{{ tomcat_root }}/conf/self-signed.csr"
+    provider: selfsigned
+    owner: root
+    group: "{{ tomcat_group }}"
+    mode: "0644"
+  tags: debug

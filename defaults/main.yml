@@ -39,12 +39,18 @@ tomcat_memory_args: "-Xms512M -Xmx1024M"
 tomcat_java_opts: "-Djava.awt.headless=true '-Duser.timezone={{tomcat_timezone}}'"
 tomcat_catalina_opts: "{{tomcat_memory_args}} {{ '-Djava.security.egd=file:/dev/../dev/urandom' if tomcat_urandom else '' }} -server -XX:+UseParallelGC"
 
+tomcat_self_signed: no
+tomcat_ssl_enabled: no
+tomcat_ssl_protocol: org.apache.coyote.http11.Http11NioProtocol
+tomcat_ssl_max_threads: 150
+
 tomcat_manage_server_xml: yes
 tomcat_server_xml_path: "{{ tomcat_root }}/conf/server.xml"
 tomcat_manage_context_xml: yes
 tomcat_manage_tomcat_users_xml: yes
 tomcat_port_offset: 0
 tomcat_http_port: "{{8080 + tomcat_port_offset|int}}"
+tomcat_https_port: "{{8443 + tomcat_port_offset|int}}"
 tomcat_shutdown_port: "{{8005 + tomcat_port_offset|int}}"
 tomcat_ajp_port: "{{8009 + tomcat_port_offset|int}}"
 
