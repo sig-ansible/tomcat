@@ -43,7 +43,6 @@
     xpath: /Server/Service/Connector[@SSLEnabled="true"]
     state: absent
   when: not tomcat_ssl_enabled
-  tags: debug
 
 - name: Set SSL connector parameters
   xml:
@@ -58,7 +57,6 @@
     protocol: "{{ tomcat_ssl_protocol }}"
     maxThreads: "{{ tomcat_ssl_max_threads }}"
   when: tomcat_ssl_enabled
-  tags: debug
 
 - name: Set certificate configuration configuration
   xml:
@@ -70,4 +68,3 @@
     value: "{{ item.value }}"
   with_dict: "{{ tomcat_ssl_cert_attrs }}"
   when: tomcat_ssl_enabled
-  tags: debug
