@@ -7,3 +7,4 @@
     roles: "{{ item.roles }}"
     append: "{{ item.append }}"
   with_items: "{{ tomcat_users }}"
+  tags: tomcat_conf

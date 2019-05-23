@@ -17,6 +17,7 @@
     value: "{{ tomcat_shutdown_port|string }}"
     pretty_print: yes
     backup: yes
+  tags: tomcat_conf
 
 - name: Set HTTP port
   xml:
@@ -26,6 +27,7 @@
     value: "{{ tomcat_http_port|string }}"
     pretty_print: yes
     backup: yes
+  tags: tomcat_conf
 
 - name: Set AJP port
   xml:
@@ -35,6 +37,7 @@
     value: "{{ tomcat_ajp_port|string }}"
     pretty_print: yes
     backup: yes
+  tags: tomcat_conf
 
 - name: Add Tomcat resources
   tomcat_resource:
@@ -42,6 +45,7 @@
     name: "{{ item.name }}"
     attrs: "{{ item.attrs }}"
   with_items: "{{ tomcat_resources }}"
+  tags: tomcat_conf
 
 - name: Remove SSL connector
   xml:
@@ -51,6 +55,7 @@
     xpath: /Server/Service/Connector[@SSLEnabled="true"]
     state: absent
   when: not tomcat_ssl_enabled
+  tags: tomcat_conf
 
 - name: Set SSL connector parameters
   xml:
@@ -65,6 +70,7 @@
     protocol: "{{ tomcat_ssl_protocol }}"
     maxThreads: "{{ tomcat_ssl_max_threads }}"
   when: tomcat_ssl_enabled
+  tags: tomcat_conf
 
 - name: Set certificate configuration configuration
   xml:
@@ -76,3 +82,4 @@
     value: "{{ item.value }}"
   with_dict: "{{ tomcat_ssl_cert_attrs }}"
   when: tomcat_ssl_enabled
+  tags: tomcat_conf

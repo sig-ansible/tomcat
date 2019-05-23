@@ -5,3 +5,4 @@
     name: "{{ item.name }}"
     global_name: "{{ item.global_name }}"
   with_items: "{{ tomcat_resource_links }}"
+  tags: tomcat_conf
