@@ -1,14 +1,18 @@
 ---
+- name: Set basename for self-signed cert
+  set_fact:
+    tomcat_ssl_cert_basename: "{{ ansible_fqdn }}-self-signed"
+
 - name: Set facts for self-signed cert
   set_fact:
     tomcat_ssl_enabled: yes
     tomcat_ssl_cert_attrs:
-      certificateKeyFile: "conf/self-signed-key.pem"
-      certificateFile: "conf/self-signed-cert.pem"
+      certificateKeyFile: "conf/{{ tomcat_ssl_cert_basename }}-key.pem"
+      certificateFile: "conf/{{ tomcat_ssl_cert_basename }}-cert.pem"
 
 - name: Generate an OpenSSL private key
   openssl_privatekey:
-    path: "{{ tomcat_root }}/conf/self-signed-key.pem"
+    path: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}-key.pem"
     owner: root
     group: "{{ tomcat_group }}"
     mode: "0640"
@@ -22,15 +26,15 @@
 #
 # - name: Generate an OpenSSL CSR
 #   openssl_csr:
-#     path: "{{ tomcat_root }}/conf/self-signed.csr"
-#     privatekey_path: "{{ tomcat_root }}/conf/self-signed-key.pem"
+#     path: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}.csr"
+#     privatekey_path: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}-key.pem"
 #     common_name: "{{ ansible_hostname }}"
 #
-# - name: Generate a self-signed OpenSSL certificate
+# - name: Generate a {{ tomcat_ssl_cert_basename }} OpenSSL certificate
 #   openssl_certificate:
-#     path: "{{ tomcat_root }}/conf/self-signed-cert.pem"
-#     privatekey_path: "{{ tomcat_root }}/conf/self-signed-key.pem"
-#     csr_path: "{{ tomcat_root }}/conf/self-signed.csr"
+#     path: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}-cert.pem"
+#     privatekey_path: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}-key.pem"
+#     csr_path: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}.csr"
 #     provider: selfsigned
 #     owner: root
 #     group: "{{ tomcat_group }}"
@@ -42,14 +46,14 @@
 - name: Generate an OpenSSL CSR configuration
   template:
     src: csr_conf.j2
-    dest: "{{ tomcat_root }}/conf/self-signed.cnf"
+    dest: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}.cnf"
 
 - name: Generate a CSR
-  command: "openssl req -key {{ tomcat_root }}/conf/self-signed-key.pem -new -out {{ tomcat_root }}/conf/self-signed.csr -config {{ tomcat_root }}/conf/self-signed.cnf"
+  command: "openssl req -key {{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}-key.pem -new -out {{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}.csr -config {{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}.cnf"
   args:
-    creates: "{{ tomcat_root }}/conf/self-signed.csr"
+    creates: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}.csr"
 
-- name: Generate a self-signed certificate
-  command: "openssl x509 -signkey {{ tomcat_root }}/conf/self-signed-key.pem -in {{ tomcat_root }}/conf/self-signed.csr -req -days 9999 -out {{ tomcat_root }}/conf/self-signed-cert.pem"
+- name: Generate a {{ tomcat_ssl_cert_basename }} certificate
+  command: "openssl x509 -signkey {{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}-key.pem -in {{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}.csr -req -days 9999 -out {{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}-cert.pem"
   args:
-    creates: "{{ tomcat_root }}/conf/self-signed-cert.pem"
+    creates: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}-cert.pem"
