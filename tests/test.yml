@@ -13,9 +13,11 @@
     tomcat_log_retain_days: 1
 
   pre_tasks:
-    - name: Install OpenJDK 8
+    - name: Install required packages
       yum:
-        name: java-1.8.0-openjdk
+        name:
+          - java-1.8.0-openjdk
+          - pyOpenSSL
 
   roles:
     - name: about

@@ -1,6 +1,14 @@
 ---
 # TODO: Make a single backup instead of using per-task backups
 
+# server.xml often has passwords in it, so limit access
+- name: Set server.xml file permissions
+  file:
+    path: "{{ tomcat_server_xml_path }}"
+    owner: "{{ tomcat_user }}"
+    mode: "0600"
+  tags: tomcat_conf
+
 - name: Set shutdown port
   xml:
     path: "{{ tomcat_server_xml_path }}"
