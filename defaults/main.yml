@@ -62,6 +62,7 @@ tomcat_delivered_apps:
   - docs
   - examples
   - host-manager
+  - manager
   - ROOT
 
 tomcat_resources: []
