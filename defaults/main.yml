@@ -10,7 +10,7 @@ tomcat_versions:
     creates: lib/websocket-api.jar
 
   8.5.40:
-    zip_url: http://mirrors.advancedhosters.com/apache/tomcat/tomcat-8/v8.5.40/bin/apache-tomcat-8.5.40.zip
+    zip_url: https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.40/bin/apache-tomcat-8.5.40.zip
     zip_hash: sha1:80a82a8838966cef682dd29a2e49f6a97e1ac654
     zip_root_dir: apache-tomcat-8.5.40
     creates: lib/websocket-api.jar
