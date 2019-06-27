@@ -1,23 +1,25 @@
-== Tomcat Instance ({{tomcat_service_name}})
-   CATALINA_HOME: {{tomcat_root_symlink}}
+== Tomcat Instance ({{ tomcat_service_name }})
+   CATALINA_HOME: {{ tomcat_root_symlink }}
+       HTTP Port: {{ tomcat_http_port }}
+      HTTPS Port: {{ tomcat_https_port }}
 
 {% if ansible_service_mgr == 'upstart' %}
 This instance of Tomcat is managed as an Upstart service.
-  To start: sudo initctl start {{tomcat_service_name}}
-   To stop: sudo initctl stop {{tomcat_service_name}}
+  To start: sudo initctl start {{ tomcat_service_name }}
+   To stop: sudo initctl stop {{ tomcat_service_name }}
 
-It's process log is at: {{tomcat_root_symlink}}/logs/upstart.log
+It's process log is at: {{ tomcat_root_symlink }}/logs/upstart.log
 {% endif %}{% if ansible_service_mgr == 'systemd' %}
 This instance of Tomcat is managed as a Systemd service.
-  To start: sudo systemctl start {{tomcat_service_name}}
-   To stop: sudo systemctl stop {{tomcat_service_name}}
+  To start: sudo systemctl start {{ tomcat_service_name }}
+   To stop: sudo systemctl stop {{ tomcat_service_name }}
 
 Like most Systemd services, this one uses the Systemd journal feature for it's
 process logging. To view the log:
 
-  sudo journalctl -u {{tomcat_service_name}}.service
+  sudo journalctl -u {{ tomcat_service_name }}.service
 
 The journalctl command also supports tail-style following with the -f argument:
 
-  sudo journalctl -fu {{tomcat_service_name}}.service
+  sudo journalctl -fu {{ tomcat_service_name }}.service
 {% endif %}
