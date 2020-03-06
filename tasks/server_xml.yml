@@ -29,6 +29,7 @@
     backup: yes
   tags: tomcat_conf
 
+# TODO: If the AJP connector has previously been deleted, then this will not work.
 - name: Set AJP port
   xml:
     path: "{{ tomcat_server_xml_path }}"
@@ -37,6 +38,17 @@
     value: "{{ tomcat_ajp_port|string }}"
     pretty_print: yes
     backup: yes
+  when: tomcat_ajp_enabled
+  tags: tomcat_conf
+  
+- name: Disable AJP
+  xml:
+    path: "{{ tomcat_server_xml_path }}"
+    xpath: /Server/Service/Connector[starts-with(@protocol,'AJP/')]
+    state: absent
+    pretty_print: yes
+    backup: yes
+  when: not tomcat_ajp_enabled
   tags: tomcat_conf
 
 - name: Add Tomcat resources
