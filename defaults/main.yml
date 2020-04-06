@@ -16,28 +16,28 @@ tomcat_versions:
     creates: lib/websocket-api.jar
 
 tomcat_version: 8.5.40
-tomcat_zip_url: "{{tomcat_versions[tomcat_version].zip_url}}"
-tomcat_zip_hash: "{{tomcat_versions[tomcat_version].zip_hash}}"
-tomcat_creates: "{{tomcat_versions[tomcat_version].creates}}"
-tomcat_zip_root_dir: "{{tomcat_versions[tomcat_version].zip_root_dir}}"
+tomcat_zip_url: "{{ tomcat_versions[tomcat_version].zip_url }}"
+tomcat_zip_hash: "{{ tomcat_versions[tomcat_version].zip_hash }}"
+tomcat_creates: "{{ tomcat_versions[tomcat_version].creates }}"
+tomcat_zip_root_dir: "{{ tomcat_versions[tomcat_version].zip_root_dir }}"
 tomcat_service_name: tomcat
-tomcat_inst_name: "{{tomcat_service_name}}-{{tomcat_version}}"
+tomcat_inst_name: "{{ tomcat_service_name }}-{{ tomcat_version }}"
 
 tomcat_base: /opt/tomcat
-tomcat_root: "{{tomcat_base}}/{{tomcat_inst_name}}"
-tomcat_root_symlink: "{{tomcat_base}}/{{tomcat_service_name}}"
+tomcat_root: "{{ tomcat_base }}/{{ tomcat_inst_name }}"
+tomcat_root_symlink: "{{ tomcat_base }}/{{ tomcat_service_name }}"
 tomcat_user: tomcat
 tomcat_user_shell: /sbin/nologin
 tomcat_group: tomcat
 
 # We need to specify a timezone for Tomcat because of a bug in Oracle's JDBC
 # driver which causes it to throw ORA-01882: timezone region  not found
-tomcat_timezone: "{{current_timezone}}"
+tomcat_timezone: "{{ current_timezone }}"
 
 tomcat_urandom: yes
 tomcat_memory_args: "-Xms512M -Xmx1024M"
-tomcat_java_opts: "-Djava.awt.headless=true '-Duser.timezone={{tomcat_timezone}}'"
-tomcat_catalina_opts: "{{tomcat_memory_args}} {{ '-Djava.security.egd=file:/dev/../dev/urandom' if tomcat_urandom else '' }} -server -XX:+UseParallelGC"
+tomcat_java_opts: "-Djava.awt.headless=true '-Duser.timezone={{ tomcat_timezone }}'"
+tomcat_catalina_opts: "{{ tomcat_memory_args }} {{ '-Djava.security.egd=file:/dev/../dev/urandom' if tomcat_urandom else '' }} -server -XX:+UseParallelGC"
 
 tomcat_self_signed: no
 tomcat_ssl_enabled: no
@@ -49,11 +49,11 @@ tomcat_server_xml_path: "{{ tomcat_root }}/conf/server.xml"
 tomcat_manage_context_xml: yes
 tomcat_manage_tomcat_users_xml: yes
 tomcat_port_offset: 0
-tomcat_http_port: "{{8080 + tomcat_port_offset|int}}"
-tomcat_https_port: "{{8443 + tomcat_port_offset|int}}"
-tomcat_shutdown_port: "{{8005 + tomcat_port_offset|int}}"
+tomcat_http_port: "{{ 8080 + tomcat_port_offset|int }}"
+tomcat_https_port: "{{ 8443 + tomcat_port_offset|int }}"
+tomcat_shutdown_port: "{{ 8005 + tomcat_port_offset|int }}"
 tomcat_ajp_enabled: no
-tomcat_ajp_port: "{{8009 + tomcat_port_offset|int}}"
+tomcat_ajp_port: "{{ 8009 + tomcat_port_offset|int }}"
 
 tomcat_manage_logging: yes
 tomcat_log_retain_days: 30
