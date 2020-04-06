@@ -1,7 +1,7 @@
 == Tomcat Instance ({{ tomcat_service_name }})
    CATALINA_HOME: {{ tomcat_root_symlink }}
        HTTP Port: {{ tomcat_http_port }}
-      HTTPS Port: {{ tomcat_https_port }}
+{% if tomcat_ssl_enabled %}      HTTPS Port: {{ tomcat_https_port }}{% endif %}
 
 {% if ansible_service_mgr == 'upstart' %}
 This instance of Tomcat is managed as an Upstart service.
