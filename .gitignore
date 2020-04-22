@@ -1,3 +1,4 @@
 test.retry
 tests/.vagrant
 tests/artifacts
+.DS_Store
