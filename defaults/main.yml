@@ -45,6 +45,7 @@ tomcat_ssl_protocol: org.apache.coyote.http11.Http11NioProtocol
 tomcat_ssl_max_threads: 150
 
 tomcat_manage_server_xml: yes
+tomcat_x_forwarded_enable: yes
 tomcat_server_xml_path: "{{ tomcat_root }}/conf/server.xml"
 tomcat_manage_context_xml: yes
 tomcat_manage_tomcat_users_xml: yes

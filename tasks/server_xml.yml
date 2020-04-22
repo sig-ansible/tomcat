@@ -29,6 +29,17 @@
     backup: yes
   tags: tomcat_conf
 
+- name: Enable x-forwarded headers
+  xml:
+    path: "{{ tomcat_server_xml_path }}"
+    xpath: /Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.RemoteIpValve"]
+    attribute: protocolHeader
+    value: X-Forwarded-Proto
+    pretty_print: yes
+    backup: yes
+  when: tomcat_x_forwarded_enable
+  tags: tomcat_conf
+
 # TODO: If the AJP connector has previously been deleted, then this will not work.
 - name: Set AJP port
   xml:
@@ -40,7 +51,7 @@
     backup: yes
   when: tomcat_ajp_enabled
   tags: tomcat_conf
-  
+
 - name: Disable AJP
   xml:
     path: "{{ tomcat_server_xml_path }}"
@@ -57,6 +68,7 @@
     name: "{{ item.name }}"
     attrs: "{{ item.attrs }}"
   with_items: "{{ tomcat_resources }}"
+  no_log: yes
   tags: tomcat_conf
 
 - name: Remove SSL connector

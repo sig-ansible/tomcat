@@ -44,7 +44,7 @@
             url: jdbc:oracle:thin:@localhost:1521:ASID
             username: dwschema
             validationQuery: select * from dual
-            validationQueryTimeout: 300"
+            validationQueryTimeout: 300
       tomcat_resource_links:
         - name: someResource
           global_name: someGlobalName
