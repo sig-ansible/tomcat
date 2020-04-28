@@ -37,7 +37,7 @@ tomcat_timezone: "{{ current_timezone }}"
 tomcat_urandom: yes
 tomcat_memory_args: "-Xms512M -Xmx1024M"
 tomcat_java_opts: "-Djava.awt.headless=true '-Duser.timezone={{ tomcat_timezone }}'"
-tomcat_catalina_opts: "{{ tomcat_memory_args }} {{ '-Djava.security.egd=file:/dev/../dev/urandom' if tomcat_urandom else '' }} -server -XX:+UseParallelGC"
+tomcat_catalina_opts: "{{ tomcat_memory_args }} {{ '-Djava.security.egd=file:/dev/../dev/urandom' if tomcat_urandom else '' }} -server -XX:+UseParallelGC {{ tomcat_catalina_extra_opts | default('') }}"
 
 tomcat_self_signed: no
 tomcat_ssl_enabled: no
