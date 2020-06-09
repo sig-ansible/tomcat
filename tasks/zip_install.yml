@@ -9,21 +9,29 @@
 # what we want to name the Tomcat root. To accomodate this we first unarchive
 # to a temporary directory in the staging area. We then move the directory
 # the zip created to it's destination and possibly rename it.
+#
+# TODO: We might also want to introduce a variable allowing user control of
+#       where the temp files are expanded.
 - name: Create temporary staging area
-  file:
-    path: "{{ stage_dir }}/tmp"
+  tempfile:
     state: directory
+  register: tempdir
 
 - name: Unzip Tomcat
   unarchive:
     src: "{{ stage_dir }}/{{ tomcat_inst_name }}.zip"
-    dest: "{{ stage_dir }}/tmp"
+    dest: "{{ tempdir.path }}"
     copy: no
 
 - name: Deploy Tomcat
-  command: mv "{{ stage_dir }}/tmp/{{ tomcat_zip_root_dir }}" "{{ tomcat_root }}"
+  command: mv "{{ tempdir.path }}/{{ tomcat_zip_root_dir }}" "{{ tomcat_root }}"
   when: true # This whole file only gets executed when there's something to do.
              # We use the when:true to satisfy the linting tool.
+
+- name: Remove temporary directory
+  file:
+    path: "{{ tempdir.path }}"
+    state: absent
 
 - name: Remove Tomcat-delivered webapps
   file:
