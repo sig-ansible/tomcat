@@ -2,6 +2,7 @@
 - name: Set basename for self-signed cert
   set_fact:
     tomcat_ssl_cert_basename: "{{ ansible_fqdn }}-self-signed"
+  tags: tomcat_conf
 
 - name: Set facts for self-signed cert
   set_fact:
@@ -9,6 +10,7 @@
     tomcat_ssl_cert_attrs:
       certificateKeyFile: "conf/{{ tomcat_ssl_cert_basename }}-key.pem"
       certificateFile: "conf/{{ tomcat_ssl_cert_basename }}-cert.pem"
+  tags: tomcat_conf
 
 - name: Generate an OpenSSL private key
   openssl_privatekey:
@@ -16,6 +18,7 @@
     owner: root
     group: "{{ tomcat_group }}"
     mode: "0640"
+  tags: tomcat_conf
 
 #
 # This does not work on RHEL 7 because of:
@@ -47,13 +50,16 @@
   template:
     src: csr_conf.j2
     dest: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}.cnf"
+  tags: tomcat_conf
 
 - name: Generate a CSR
   command: "openssl req -key {{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}-key.pem -new -out {{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}.csr -config {{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}.cnf"
   args:
     creates: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}.csr"
+  tags: tomcat_conf
 
 - name: Generate a {{ tomcat_ssl_cert_basename }} certificate
   command: "openssl x509 -signkey {{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}-key.pem -in {{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}.csr -req -days 9999 -out {{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}-cert.pem"
   args:
     creates: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}-cert.pem"
+  tags: tomcat_conf
