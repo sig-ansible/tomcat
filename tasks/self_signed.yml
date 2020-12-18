@@ -8,8 +8,8 @@
   set_fact:
     tomcat_ssl_enabled: yes
     tomcat_ssl_cert_attrs:
-      certificateKeyFile: "conf/{{ tomcat_ssl_cert_basename }}-key.pem"
-      certificateFile: "conf/{{ tomcat_ssl_cert_basename }}-cert.pem"
+      certificateKeyFile: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}-key.pem"
+      certificateFile: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}-cert.pem"
   tags: tomcat_conf
 
 - name: Generate an OpenSSL private key
