@@ -68,7 +68,7 @@
     name: "{{ item.name }}"
     attrs: "{{ item.attrs }}"
   with_items: "{{ tomcat_resources }}"
-  no_log: tomcat_censor_ansible_output
+  no_log: "{{ tomcat_censor_ansible_output }}"
   tags: tomcat_conf
 
 - name: Remove SSL connector
