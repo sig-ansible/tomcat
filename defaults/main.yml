@@ -43,6 +43,8 @@ tomcat_self_signed: no
 tomcat_ssl_enabled: no
 tomcat_ssl_protocol: org.apache.coyote.http11.Http11NioProtocol
 tomcat_ssl_max_threads: 150
+tomcat_ssl_fqdn: "{{ ansible_fqdn }}"
+tomcat_ssl_org_name: "{{ ansible_domain }}"
 
 tomcat_censor_ansible_output: yes
 tomcat_manage_server_xml: yes

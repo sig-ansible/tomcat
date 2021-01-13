@@ -4,8 +4,8 @@
 # on the command line.
 
 # the fully qualified server (or service) name
-FQDN = {{ ansible_fqdn }}
-ORGNAME = {{ ansible_domain }}
+FQDN = {{ tomcat_ssl_fqdn }}
+ORGNAME = {{ tomcat_ssl_org_name }}
 
 # subjectAltName entries: to add DNS aliases to the CSR, delete
 # the '#' character in the ALTNAMES line, and change the subsequent
