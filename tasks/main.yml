@@ -91,6 +91,14 @@
     remote_src: yes
   with_items: "{{ tomcat_add_jars }}"
 
+- name: Download jars to Tomcat
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ tomcat_root }}/lib/{{ item.filename | default(item.url | basename) }}"
+    mode: "0644"
+    checksum: "{{ item.checksum }}"
+  loop: "{{ tomcat_download_jars }}"
+
 # - name: Create Upstart Service
 #   template:
 #     src: tomcat_upstart.conf
