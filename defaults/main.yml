@@ -15,6 +15,12 @@ tomcat_versions:
     zip_root_dir: apache-tomcat-8.5.40
     creates: lib/websocket-api.jar
 
+  9.0.43:
+    zip_url: https://downloads.apache.org/tomcat/tomcat-9/v9.0.43/bin/apache-tomcat-9.0.43.zip
+    zip_hash: sha1:48e4a1b8caeabb30d9af6174cd73a0f683ba29ee
+    zip_root_dir: apache-tomcat-9.0.43
+    creates: lib/websocket-api.jar
+
 tomcat_version: 8.5.40
 tomcat_zip_url: "{{ tomcat_versions[tomcat_version].zip_url }}"
 tomcat_zip_hash: "{{ tomcat_versions[tomcat_version].zip_hash }}"
