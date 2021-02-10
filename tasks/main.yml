@@ -98,6 +98,7 @@
     mode: "0644"
     checksum: "{{ item.checksum }}"
   loop: "{{ tomcat_download_jars }}"
+  when: tomcat_download_jars is defined
 
 # - name: Create Upstart Service
 #   template:
