@@ -15,13 +15,19 @@ tomcat_versions:
     zip_root_dir: apache-tomcat-8.5.40
     creates: lib/websocket-api.jar
 
+  8.5.66:
+    zip_url: https://apache.osuosl.org/tomcat/tomcat-8/v8.5.66/bin/apache-tomcat-8.5.66.zip
+    zip_hash: sha1:bd5bca32d317c0af6dfac41c5a853329dbf68f51
+    zip_root_dir: apache-tomcat-8.5.66
+    creates: lib/websocket-api.jar
+
   9.0.43:
     zip_url: https://downloads.apache.org/tomcat/tomcat-9/v9.0.43/bin/apache-tomcat-9.0.43.zip
     zip_hash: sha1:48e4a1b8caeabb30d9af6174cd73a0f683ba29ee
     zip_root_dir: apache-tomcat-9.0.43
     creates: lib/websocket-api.jar
 
-tomcat_version: 8.5.40
+tomcat_version: 8.5.66
 tomcat_zip_url: "{{ tomcat_versions[tomcat_version].zip_url }}"
 tomcat_zip_hash: "{{ tomcat_versions[tomcat_version].zip_hash }}"
 tomcat_creates: "{{ tomcat_versions[tomcat_version].creates }}"
