@@ -6,3 +6,14 @@
     global_name: "{{ item.global_name }}"
   with_items: "{{ tomcat_resource_links }}"
   tags: tomcat_conf
+
+- name: Set Tomcat Context/CookieProcessor/sameSiteCookies
+  xml:
+    path: "{{ tomcat_context_xml_path }}"
+    xpath: /Context/CookieProcessor
+    attribute: sameSiteCookies
+    value: "{{ tomcat_context_cookie_processor_same_site_cookies }}"
+    pretty_print: yes
+    backup: yes
+  when: tomcat_context_cookie_processor_same_site_cookies is defined
+  tags: tomcat_conf

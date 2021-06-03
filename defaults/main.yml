@@ -63,6 +63,7 @@ tomcat_manage_server_xml: yes
 tomcat_x_forwarded_enable: yes
 tomcat_server_xml_path: "{{ tomcat_root }}/conf/server.xml"
 tomcat_manage_context_xml: yes
+tomcat_context_xml_path: "{{ tomcat_root }}/conf/context.xml"
 tomcat_manage_tomcat_users_xml: yes
 tomcat_port_offset: 0
 tomcat_http_port: "{{ 8080 + tomcat_port_offset|int }}"
