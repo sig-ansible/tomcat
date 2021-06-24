@@ -40,13 +40,27 @@
   when: tomcat_x_forwarded_enable
   tags: tomcat_conf
 
+- name: Set maxHttpHeaderSize
+  xml:
+    path: "{{ tomcat_server_xml_path }}"
+    xpath: "{{ item }}"
+    attribute: maxHttpHeaderSize
+    value: "{{ tomcat_max_http_header_size | string }}"
+    pretty_print: yes
+    backup: yes
+  loop:
+    - /Server/Service/Connector[starts-with(@protocol,'HTTP/')]
+    - /Server/Service/Connector[@SSLEnabled="true"]
+  when: tomcat_max_http_header_size is defined
+  tags: tomcat_conf
+
 # TODO: If the AJP connector has previously been deleted, then this will not work.
 - name: Set AJP port
   xml:
     path: "{{ tomcat_server_xml_path }}"
     xpath: /Server/Service/Connector[starts-with(@protocol,'AJP/')]
     attribute: port
-    value: "{{ tomcat_ajp_port|string }}"
+    value: "{{ tomcat_ajp_port | string }}"
     pretty_print: yes
     backup: yes
   when: tomcat_ajp_enabled

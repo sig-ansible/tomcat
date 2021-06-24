@@ -1,4 +1,7 @@
 ---
+# TODO: Stop using tomcat_inst_name and use the original zip file name. The way
+#       it is, it'll re-download the file if there are multiple Tomcat instances
+#       defined.
 - name: Download Tomcat
   get_url:
     url: "{{ tomcat_zip_url }}"

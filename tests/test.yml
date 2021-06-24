@@ -25,6 +25,7 @@
     - name: tomcat
       tomcat_service_name: tomcat_a
       tomcat_self_signed: yes
+      tomcat_max_http_header_size: 12288
       tomcat_resources:
         - name: someResource
           attrs:
