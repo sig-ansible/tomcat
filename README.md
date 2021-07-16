@@ -3,6 +3,17 @@ SIG's Parameterized Tomcat Role
 
 Install and configure Apache Tomcat.
 
+  * [Requirements](#requirements)
+  * [Role Variables](#role-variables)
+    + [JAR Download Objects](#jar-download-objects)
+    + [JNDI Resource Link Objects](#jndi-resource-link-objects)
+    + [JNDI Resource Objects](#jndi-resource-objects)
+    + [Tomcat User Objects](#tomcat-user-objects)
+  * [Dependencies](#dependencies)
+  * [Example Playbook](#example-playbook)
+  * [License](#license)
+  * [Author Information](#author-information)
+
 Requirements
 ------------
 
