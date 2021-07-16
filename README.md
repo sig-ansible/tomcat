@@ -11,6 +11,10 @@ Requirements
 Role Variables
 --------------
 
+* `stage_dir` (string) - *Required* - Path to a staging directory used during
+  the installation process.
+  * **Note:** While no default is provided, `/tmp` is usually sufficient.
+
 * `tomcat_java_home` (string) - *Required* - Path to the JAVA_HOME Tomcat will use.
 
 * `tomcat_version` (string) - *Recommended* - Tomcat version to install.
@@ -38,6 +42,9 @@ Role Variables
   * **Note:** By default, Tomcat will be installed at 
   `{{ tomcat_base }}/{{ tomcat_service_name}}-{{ tomcat_version }}` 
   with as symlink at `{{ tomcat_base }}/{{ tomcat_service_name }}`
+  
+* `tomcat_catalina_extra_opts` (string) - Extra JVM arguments to include at
+  start time.
     
 * `tomcat_censor_ansible_output` (boolean) - When `true` certain output will be
   elided from the log to avoid exposing secrets. You can set this to `false` to
@@ -220,11 +227,71 @@ enabled.
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+``` yaml
+  - role: sig-ansible.tomcat
+    vars:
+      stage_dir: /tmp
+      tomcat_self_signed: yes
+      tomcat_base: /u01/app
+      tomcat_memory_args: "-Xms2048m -Xmx6g -XX:MaxPermSize=2048m -Doracle.jdbc.autoCommitSpecCompliant=false"
+      tomcat_catalina_extra_opts: "-Dbanner.logging.dir=/u01/app/logs"
+      tomcat_download_jars:
+        - url: https://repo1.maven.org/maven2/com/oracle/database/jdbc/ojdbc8/19.3.0.0/ojdbc8-19.3.0.0.jar
+          checksum: 'sha256:a66d27a14f3adee484427cc4de008af85a5c3e78e2e3285a4dba1277332978a5'
+          filename: ojdbc8.jar
+        - url: https://repo1.maven.org/maven2/com/oracle/database/xml/xdb/19.3.0.0/xdb-19.3.0.0.jar
+          checksum: 'sha256:a3f0545da9651359f05e6538886679f546632f63d409bb7247a0e2c8ae07d078'
+          filename: xdb.jar
+        - url: https://repo1.maven.org/maven2/com/oracle/database/jdbc/ucp/19.3.0.0/ucp-19.3.0.0.jar
+          checksum: 'sha256:23d8debe40a764df74d5eda7e8c1ce9b2c190a34f739ca4d751eaa94114d31cc'
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+      tomcat_resources:
+        - name: jdbc/bannerDataSource
+          attrs:
+            auth: Container
+            type: javax.sql.DataSource
+            url: "{{ banner_jdbc_url }}"
+            username: banproxy
+            password: "{{ banproxy_pw }}"
+            driverClassName: oracle.jdbc.OracleDriver
+            initialSize: 25
+            maxIdle: 10
+            maxTotal: 400
+            maxWaitMillis: 30000
+            minIdle: 10
+            timeBetweenEvictionRunsMillis: 1800000
+            testOnBorrow: true
+            testWhileIdle: true
+            accessToUnderlyingConnectionAllowed: true
+            validationQuery: select * from dual
+            validationQueryTimeout: 300
+
+        - name: jdbc/bannerSsbDataSource
+          attrs:
+            auth: Container
+            type: javax.sql.DataSource
+            url: "{{ banner_jdbc_url }}"
+            username: ban_ss_user
+            password: "{{ ban_ss_user_pw }}"
+            driverClassName: oracle.jdbc.OracleDriver
+            initialSize: 25
+            maxIdle: 10
+            maxTotal: 400
+            maxWaitMillis: 30000
+            minIdle: 10
+            timeBetweenEvictionRunsMillis: 1800000
+            testOnBorrow: true
+            testWhileIdle: true
+            accessToUnderlyingConnectionAllowed: true
+            validationQuery: select * from dual
+            validationQueryTimeout: 300
+
+      tomcat_resource_links:
+        - name: jdbc/bannerDataSource
+          global_name: jdbc/bannerDataSource
+        - name: jdbc/bannerSsbDataSource
+          global_name: jdbc/bannerSsbDataSource
+```
 
 License
 -------
