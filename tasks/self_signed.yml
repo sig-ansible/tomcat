@@ -27,6 +27,8 @@
 # Should be resolved by:
 #   https://github.com/ansible/ansible/issues/34054
 #
+# TODO: This issue was resolved in 2019, may want to switch back to this approach.
+#
 # - name: Generate an OpenSSL CSR
 #   openssl_csr:
 #     path: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}.csr"
