@@ -44,6 +44,7 @@ tomcat_inst_name: "{{ tomcat_service_name }}-{{ tomcat_version }}"
 tomcat_base: /opt/tomcat
 tomcat_root: "{{ tomcat_base }}/{{ tomcat_inst_name }}"
 tomcat_root_symlink: "{{ tomcat_base }}/{{ tomcat_service_name }}"
+tomcat_working_dir: "{{ tomcat_root_symlink }}/bin"
 tomcat_user: tomcat
 tomcat_user_shell: /sbin/nologin
 tomcat_group: tomcat
