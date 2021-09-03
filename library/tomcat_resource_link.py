@@ -11,8 +11,13 @@ source ~/custom/ansible/hacking/env-setup
 Module for managing Tomcat resource links
 """
 
+import sys
 import xml.dom.minidom
 from ansible.module_utils.basic import AnsibleModule
+
+
+XML_WRITE_MODE = 'wb' if sys.version_info[0] < 3 else 'w'
+
 
 def main():
     """Entry point for module"""
@@ -64,7 +69,7 @@ def main():
         if need_change:
             link.setAttribute("global", global_name)
             link.setAttribute("type", type_class)
-            with open(context, 'wb') as out:
+            with open(context, XML_WRITE_MODE) as out:
                 root.writexml(out)
 
         module.exit_json(changed=need_change)
@@ -77,7 +82,7 @@ def main():
                 node.parentNode.removeChild(node)
                 was_changed = True
             if was_changed:
-                with open(context, 'wb') as out:
+                with open(context, XML_WRITE_MODE) as out:
                     root.writexml(out)
             module.exit_json(changed=was_changed)
 

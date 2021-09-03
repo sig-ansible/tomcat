@@ -11,13 +11,24 @@
     tomcat_add_jars:
       - /mnt/artifacts/ojdbc7.jar
     tomcat_log_retain_days: 1
+    tomcat_censor_ansible_output: no
 
   pre_tasks:
     - name: Install required packages
       yum:
         name:
           - java-1.8.0-openjdk
-          - pyOpenSSL
+          - pyOpenSSL        # RHEL 7
+
+          # RHEL 8
+          # - python3-pyOpenSSL
+          # - python36
+
+    # RHEL 8
+    # - name: Install pip packages
+    #   pip:
+    #     name:
+    #       - lxml
 
   roles:
     - name: about

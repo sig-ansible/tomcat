@@ -11,9 +11,13 @@ source ~/custom/ansible/hacking/env-setup
 """
 
 import os
+import sys
 import xml.dom.minidom
 import tempfile
 from ansible.module_utils.basic import AnsibleModule
+
+XML_WRITE_MODE = 'wb' if sys.version_info[0] < 3 else 'w'
+
 
 def role_list(comma_list):
     return sorted([s.strip() for s in set(comma_list.split(',')) if len(s.strip()) > 0])
@@ -77,7 +81,7 @@ class TomcatUserRun(object):
         # Save the XML only if it's been changed
         if self.changed and not self.module.check_mode:
             tmpfd, tmpfile = tempfile.mkstemp()
-            with os.fdopen(tmpfd, 'wb') as out:
+            with os.fdopen(tmpfd, XML_WRITE_MODE) as out:
                 self.root.writexml(out)
             self.module.atomic_move(tmpfile, xml_path)
 

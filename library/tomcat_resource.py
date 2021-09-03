@@ -15,10 +15,12 @@ Module for managing Tomcat GlobalNamingResources
 """
 
 import os
+import sys
 import xml.dom.minidom
 import tempfile
 from ansible.module_utils.basic import AnsibleModule
 
+XML_WRITE_MODE = 'wb' if sys.version_info[0] < 3 else 'w'
 
 class TomcatResourceRun(object):
     def __init__(self):
@@ -72,7 +74,7 @@ class TomcatResourceRun(object):
         # Save the XML only if it's been changed
         if self.changed and not self.module.check_mode:
             tmpfd, tmpfile = tempfile.mkstemp()
-            with os.fdopen(tmpfd, 'wb') as out:
+            with os.fdopen(tmpfd, XML_WRITE_MODE) as out:
                 self.root.writexml(out)
             self.module.atomic_move(tmpfile, xml_path)
 
