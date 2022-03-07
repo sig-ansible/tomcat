@@ -68,6 +68,9 @@ Role Variables
 * `tomcat_download_jars` (list of [JAR Download
   Objects](#jar-download-objects)) - JARS to be downloaded to Tomcat's `lib`
   directory.
+  
+* `tomcat_connector_extra_attrs` (list of [Extra Attribute Objects](#extra-attribute-objects)) -
+  Additional attributes to be added to the HTTP and HTTPS connector tags in server.xml.
 
 * `tomcat_group` (string) - Primary group for `tomcat_user`
   * **Default:** `tomcat`
@@ -177,6 +180,11 @@ Role Variables
 * `url` (string) - *Required* - URL to download
 * `filename` (string) - Name of the file to be stored in `lib`
   * **Default:** The filename in the URL
+  
+### Extra Attribute Objects
+
+* `attribute` (string) - *Required* - Attribute to set
+* `value` (string) - *Required* - Value to set
   
 ### JNDI Resource Link Objects
 

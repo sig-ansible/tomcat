@@ -48,10 +48,20 @@
     value: "{{ tomcat_max_http_header_size | string }}"
     pretty_print: yes
     backup: yes
-  loop:
-    - /Server/Service/Connector[starts-with(@protocol,'HTTP/')]
-    - /Server/Service/Connector[@SSLEnabled="true"]
+  loop: "{{ tomcat_all_connectors_xpath }}"
   when: tomcat_max_http_header_size is defined
+  tags: tomcat_conf
+
+- name: Set extra connector attributes
+  xml:
+    path: "{{ tomcat_server_xml_path }}"
+    xpath: "{{ item[1] }}"
+    attribute: "{{ item[0].attribute }}"
+    value: "{{ item[0].value | string }}"
+    pretty_print: yes
+    backup: yes
+  when: tomcat_connector_extra_attrs is defined
+  loop: "{{ tomcat_connector_extra_attrs | product(tomcat_all_connectors_xpath) | list }}"
   tags: tomcat_conf
 
 # TODO: If the AJP connector has previously been deleted, then this will not work.

@@ -82,6 +82,10 @@ tomcat_ajp_port: "{{ 8009 + tomcat_port_offset|int }}"
 tomcat_manage_logging: yes
 tomcat_log_retain_days: 30
 
+tomcat_all_connectors_xpath:
+  - /Server/Service/Connector[starts-with(@protocol,'HTTP/')]
+  - /Server/Service/Connector[@SSLEnabled="true"]
+
 tomcat_remove_delivered_apps: yes
 tomcat_delivered_apps:
   - docs
