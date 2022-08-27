@@ -15,7 +15,7 @@
 - name: Generate an OpenSSL private key
   openssl_privatekey:
     path: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}-key.pem"
-    owner: root
+    owner: "{{ tomcat_ssl_private_key_owner }}"
     group: "{{ tomcat_group }}"
     mode: "0640"
   tags: tomcat_conf
@@ -41,7 +41,7 @@
 #     privatekey_path: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}-key.pem"
 #     csr_path: "{{ tomcat_root }}/conf/{{ tomcat_ssl_cert_basename }}.csr"
 #     provider: selfsigned
-#     owner: root
+#     owner: "{{ tomcat_ssl_private_key_owner }}"
 #     group: "{{ tomcat_group }}"
 #     mode: "0644"
 

@@ -47,7 +47,7 @@
 - name: Configure Tomcat environment
   template:
     src: setenv.sh
-    dest: "{{ tomcat_root }}/bin"
+    dest: "{{ tomcat_root }}/bin/setenv.sh"
     mode: "0755"
   tags: tomcat_conf
 
