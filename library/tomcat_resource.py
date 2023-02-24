@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 source ~/custom/ansible/hacking/env-setup
 
@@ -20,7 +18,8 @@ import xml.dom.minidom
 import tempfile
 from ansible.module_utils.basic import AnsibleModule
 
-XML_WRITE_MODE = 'wb' if sys.version_info[0] < 3 else 'w'
+XML_WRITE_MODE = "wb" if sys.version_info[0] < 3 else "w"
+
 
 class TomcatResourceRun(object):
     def __init__(self):
@@ -28,26 +27,26 @@ class TomcatResourceRun(object):
 
         self.module = AnsibleModule(
             argument_spec=dict(
-                state=dict(default='present', choices=['present', 'absent']),
+                state=dict(default="present", choices=["present", "absent"]),
                 name=dict(required=True),
-                catalina_home=dict(type='path'),
-                xml_path=dict(type='path'),
-                attrs=dict(type='dict', default={})
+                catalina_home=dict(type="path"),
+                xml_path=dict(type="path"),
+                attrs=dict(type="dict", default={}),
             ),
-            mutually_exclusive=[['catalina_home', 'xml_path']],
-            required_one_of=[['catalina_home', 'xml_path']],
-            supports_check_mode=True
+            mutually_exclusive=[["catalina_home", "xml_path"]],
+            required_one_of=[["catalina_home", "xml_path"]],
+            supports_check_mode=True,
         )
 
     def go(self):
-        state = self.module.params['state']
-        xml_path = self.module.params['xml_path']
+        state = self.module.params["state"]
+        xml_path = self.module.params["xml_path"]
 
-        self.name = self.module.params['name']
-        self.attrs = self.module.params['attrs']
+        self.name = self.module.params["name"]
+        self.attrs = self.module.params["attrs"]
 
         if not xml_path:
-            xml_path = self.module.params['catalina_home'] + '/conf/server.xml'
+            xml_path = self.module.params["catalina_home"] + "/conf/server.xml"
 
         # Parser the XML
         self.dom = xml.dom.minidom.parse(xml_path)
@@ -61,12 +60,15 @@ class TomcatResourceRun(object):
         else:
             self.gnr_node = self.gnr_node[0]
 
-        self.gnr_res = [node for node in self.gnr_node.getElementsByTagName("Resource")
-                        if node.getAttribute("name") == self.name]
+        self.gnr_res = [
+            node
+            for node in self.gnr_node.getElementsByTagName("Resource")
+            if node.getAttribute("name") == self.name
+        ]
 
-        if state == 'present':
+        if state == "present":
             self.ensure_present()
-        elif state == 'absent':
+        elif state == "absent":
             self.ensure_absent()
         else:
             self.module.fail_json(msg="Invalid state: " + state)
@@ -115,7 +117,7 @@ class TomcatResourceRun(object):
                 if attr.value != pending_attrs[attr.name]:
                     link.setAttribute(attr.name, pending_attrs[attr.name])
                     self.changed = True
-                del(pending_attrs[attr.name])
+                del pending_attrs[attr.name]
             else:
                 attrs_to_remove = attrs_to_remove + [attr.name]
 
@@ -129,5 +131,5 @@ class TomcatResourceRun(object):
             link.setAttribute(k, pending_attrs[k])
 
 
-if __name__ == '__main__':
-    TomcatResourceRun().go();
+if __name__ == "__main__":
+    TomcatResourceRun().go()
