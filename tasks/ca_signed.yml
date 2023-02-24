@@ -1,0 +1,20 @@
+---
+- name: Set facts for CA-signed cert
+  set_fact:
+    tomcat_ssl_enabled: yes
+    tomcat_ssl_cert_attrs:
+      certificateKeyFile: "{{ tomcat_ca_signed_key_path }}"
+      certificateFile: "{{ tomcat_ca_signed_cert_chain_path }}"
+  tags: tomcat_conf
+
+- name: Install certificate chain
+  copy:
+    dest: "{{ tomcat_ca_signed_cert_chain_path }}"
+    content: "{{ tomcat_ca_signed_cert_chain_armored }}"
+  tags: tomcat_conf
+
+- name: Install certificate key
+  copy:
+    dest: "{{ tomcat_ca_signed_key_path }}"
+    content: "{{ tomcat_ca_signed_key_armored }}"
+  tags: tomcat_conf

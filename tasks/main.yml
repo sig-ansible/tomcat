@@ -1,5 +1,9 @@
 ---
+- include_tasks: guards.yml
+  tags: always
+
 - include_tasks: preinstall.yml
+  tags: always
 
 - name: Create Tomcat group
   group:
@@ -66,6 +70,10 @@
 
 - include_tasks: self_signed.yml
   when: tomcat_self_signed
+  tags: always
+
+- include_tasks: ca_signed.yml
+  when: tomcat_ca_signed
   tags: always
 
 - include_tasks: server_xml.yml
