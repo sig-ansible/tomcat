@@ -1,0 +1,15 @@
+---
+- name: CA and Self-signed cannot be set together
+  fail:
+    msg: "tomcat_ca_signed and tomcat_self_signed cannot both be true"
+  when: tomcat_ca_signed and tomcat_self_signed
+
+- name: Check for missing certificate variable
+  fail:
+    msg: "When tomcat_ca_signed is true you must set tomcat_ca_signed_cert_chain_armored"
+  when: tomcat_ca_signed and (tomcat_ca_signed_cert_chain_armored is not defined)
+
+- name: Check for missing certificate key variable
+  fail:
+    msg: "When tomcat_ca_signed is true you must set tomcat_ca_signed_key_armored"
+  when: tomcat_ca_signed and (tomcat_ca_signed_key_armored is not defined)

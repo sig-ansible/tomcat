@@ -64,6 +64,10 @@ tomcat_memory_args: "-Xms512M -Xmx1024M"
 tomcat_java_opts: "-Djava.awt.headless=true '-Duser.timezone={{ tomcat_timezone }}'"
 tomcat_catalina_opts: "{{ tomcat_memory_args }} {{ '-Djava.security.egd=file:/dev/../dev/urandom' if tomcat_urandom else '' }} -server -XX:+UseParallelGC {{ tomcat_catalina_extra_opts | default('') }}"
 
+tomcat_ca_signed: no
+tomcat_ca_signed_cert_label: "ca-signed"
+tomcat_ca_signed_cert_chain_path: "{{ tomcat_root }}/conf/{{ tomcat_ca_signed_cert_label }}-cert.pem"
+tomcat_ca_signed_key_path: "{{ tomcat_root }}/conf/{{ tomcat_ca_signed_cert_label }}-key.pem"
 tomcat_self_signed: no
 tomcat_ssl_enabled: no
 tomcat_ssl_protocol: org.apache.coyote.http11.Http11NioProtocol
