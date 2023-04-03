@@ -1,6 +1,7 @@
 ---
 - include_tasks: detect_timezone.yml
   when: current_timezone is not defined
+  tags: tomcat_conf
 
 - name: Install required packages
   package:

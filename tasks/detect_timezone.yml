@@ -3,6 +3,7 @@
   stat:
     path: /usr/bin/timedatectl
   register: stat_res
+  tags: tomcat_conf
 
 - name: Determine system timezone
   shell: |
@@ -11,14 +12,18 @@
   register: res
   changed_when: False
   check_mode: no
+  tags: tomcat_conf
 
 - name: Set current_timezone
   set_fact: current_timezone={{ res.stdout }}
+  tags: tomcat_conf
 
 - name: Validate current_timezone
   fail:
     msg: Unable to detect timezone. You must specify the current_timezone var
   when: current_timezone is not defined
+  tags: tomcat_conf
 
 - debug:
     msg: "Timezone detected: {{ current_timezone }} - This can be overidden with the current_timezone variable"
+  tags: tomcat_conf
