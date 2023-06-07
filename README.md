@@ -30,7 +30,7 @@ Role Variables
 
 * `tomcat_version` (string) - *Recommended* - Tomcat version to install.
   * **Default:** `8.5.68`
-  * **Allowed Values:** `8.5.4`, `8.5.40`, `8.5.66`, `8.5.68`, `9.0.43`
+  * **Allowed Values:** `8.5.4`, `8.5.40`, `8.5.66`, `8.5.68`, `8.5.89`, `9.0.43`
   * **Note:** It is recommended that you supply a `tomcat_version` rather than
     using the default as the default is subject to change without notice.
     
