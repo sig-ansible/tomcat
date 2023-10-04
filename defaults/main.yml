@@ -34,7 +34,7 @@ tomcat_versions:
     creates: lib/websocket-api.jar
 
   8.5.89:
-    zip_url: https://downloads.apache.org/tomcat/tomcat-8/v8.5.89/bin/apache-tomcat-8.5.89.zip
+    zip_url: https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.89/bin/apache-tomcat-8.5.89.zip
     zip_hash: sha1:96f1041ff2258fe4e64f63cc06e1699a5b5dc2e5
     zip_root_dir: apache-tomcat-8.5.89
     creates: lib/websocket-api.jar
