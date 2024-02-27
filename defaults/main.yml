@@ -1,61 +1,15 @@
 ---
-# This dictionary defines the defaults for various versions.
-#   * Always use SHA1 hashes because they're available on all platforms
-#   * Never use a file from "webapps" in the create variable
-tomcat_versions:
-  8.5.4:
-    zip_url: http://r.sigcorp.com/foss_artifacts/apache-tomcat-8.5.4.zip
-    zip_hash: sha1:95fcdb9f428e30f17cbb634815770450d991cbb9
-    zip_root_dir: apache-tomcat-8.5.4
-    creates: lib/websocket-api.jar
+tomcat_version: ">>>    `tomcat_version` must be set explicitly.    <<<"
 
-  8.5.40:
-    zip_url: https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.40/bin/apache-tomcat-8.5.40.zip
-    zip_hash: sha1:80a82a8838966cef682dd29a2e49f6a97e1ac654
-    zip_root_dir: apache-tomcat-8.5.40
-    creates: lib/websocket-api.jar
+tomcat_mirror_base: https://archive.apache.org/dist/tomcat
+tomcat__major_version: "{{ tomcat_version | split('.') | first }}"
+tomcat__version_url: "{{ tomcat_mirror_base }}/tomcat-{{ tomcat__major_version }}/v{{ tomcat_version }}"
 
-  8.5.66:
-    zip_url: https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.66/bin/apache-tomcat-8.5.66.zip
-    zip_hash: sha1:bd5bca32d317c0af6dfac41c5a853329dbf68f51
-    zip_root_dir: apache-tomcat-8.5.66
-    creates: lib/websocket-api.jar
-
-  8.5.68:
-    zip_url: https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.68/bin/apache-tomcat-8.5.68.zip
-    zip_hash: sha1:0d471bf2677d0bf114b5107bb52b25be37b4ea6b
-    zip_root_dir: apache-tomcat-8.5.68
-    creates: lib/websocket-api.jar
-
-  8.5.85:
-    zip_url: https://downloads.apache.org/tomcat/tomcat-8/v8.5.85/bin/apache-tomcat-8.5.85.zip
-    zip_hash: sha1:d7a2f27d0956c335c82deca2a222d0fa016d1774
-    zip_root_dir: apache-tomcat-8.5.85
-    creates: lib/websocket-api.jar
-
-  8.5.89:
-    zip_url: https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.89/bin/apache-tomcat-8.5.89.zip
-    zip_hash: sha1:96f1041ff2258fe4e64f63cc06e1699a5b5dc2e5
-    zip_root_dir: apache-tomcat-8.5.89
-    creates: lib/websocket-api.jar
-
-  9.0.43:
-    zip_url: https://downloads.apache.org/tomcat/tomcat-9/v9.0.43/bin/apache-tomcat-9.0.43.zip
-    zip_hash: sha1:48e4a1b8caeabb30d9af6174cd73a0f683ba29ee
-    zip_root_dir: apache-tomcat-9.0.43
-    creates: lib/websocket-api.jar
-
-  9.0.73:
-    zip_url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.73/bin/apache-tomcat-9.0.73.zip
-    zip_hash: sha1:e27bef6f954750e6d188cd9bf673982dd6f7b526
-    zip_root_dir: apache-tomcat-9.0.73
-    creates: lib/websocket-api.jar
-
-tomcat_version: 8.5.68
-tomcat_zip_url: "{{ tomcat_versions[tomcat_version].zip_url }}"
-tomcat_zip_hash: "{{ tomcat_versions[tomcat_version].zip_hash }}"
-tomcat_creates: "{{ tomcat_versions[tomcat_version].creates }}"
-tomcat_zip_root_dir: "{{ tomcat_versions[tomcat_version].zip_root_dir }}"
+tomcat_zip_url: "{{ tomcat__version_url }}/bin/apache-tomcat-{{ tomcat_version }}.zip"
+tomcat_hash_url: "{{ tomcat_zip_url }}.sha512"
+tomcat_zip_hash_algorithm: sha512
+tomcat_creates: "lib/websocket-api.jar"
+tomcat_zip_root_dir: "apache-tomcat-{{ tomcat_version }}"
 tomcat_service_name: tomcat
 tomcat_inst_name: "{{ tomcat_service_name }}-{{ tomcat_version }}"
 

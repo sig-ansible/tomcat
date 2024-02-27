@@ -1,11 +1,24 @@
 ---
+- name: zip_install > Fetch zip hash
+  uri:
+    url: "{{ tomcat_hash_url }}"
+    return_content: yes
+  when: tomcat_zip_hash is not defined
+  register: tomcat__hash_fetch_res
+
+- name: zip_install > Register the zip hash
+  set_fact:
+    tomcat_zip_hash: "{{ tomcat_zip_hash_algorithm }}:{{ tomcat__hash_fetch_res.content | split(' ') | first }}"
+  when: tomcat_zip_hash is not defined
+
 # TODO: Stop using tomcat_inst_name and use the original zip file name. The way
 #       it is, it'll re-download the file if there are multiple Tomcat instances
 #       defined.
-- name: Download Tomcat
+- name: zip_install > Download Tomcat
   get_url:
     url: "{{ tomcat_zip_url }}"
     dest: "{{ stage_dir }}/{{ tomcat_inst_name }}.zip"
+    # TODO: Replace checksum with a PGP check
     checksum: "{{ tomcat_zip_hash }}"
 
 # The root of the Tomcat zip is a directory. This directory might not be
@@ -15,28 +28,28 @@
 #
 # TODO: We might also want to introduce a variable allowing user control of
 #       where the temp files are expanded.
-- name: Create temporary staging area
+- name: zip_install > Create temporary staging area
   tempfile:
     state: directory
   register: tempdir
 
-- name: Unzip Tomcat
+- name: zip_install > Unzip Tomcat
   unarchive:
     src: "{{ stage_dir }}/{{ tomcat_inst_name }}.zip"
     dest: "{{ tempdir.path }}"
     copy: no
 
-- name: Deploy Tomcat
+- name: zip_install > Deploy Tomcat
   command: mv "{{ tempdir.path }}/{{ tomcat_zip_root_dir }}" "{{ tomcat_root }}"
   when: true # This whole file only gets executed when there's something to do.
              # We use the when:true to satisfy the linting tool.
 
-- name: Remove temporary directory
+- name: zip_install > Remove temporary directory
   file:
     path: "{{ tempdir.path }}"
     state: absent
 
-- name: Remove Tomcat-delivered webapps
+- name: zip_install > Remove Tomcat-delivered webapps
   file:
     path: "{{ tomcat_root  }}/webapps/{{ item }}"
     state: absent

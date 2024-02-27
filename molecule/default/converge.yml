@@ -8,5 +8,7 @@
     stage_dir: /tmp
     tomcat_java_home: /etc/alternatives/java_sdk
 
+    tomcat_version: 8.5.99
+
   roles:
     - tomcat
