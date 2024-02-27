@@ -1,0 +1,10 @@
+---
+- name: Prepare
+  hosts: all
+
+  tasks:
+    - name: Install java
+      dnf:
+        name:
+          - java-11-openjdk-devel
+          - python3-lxml

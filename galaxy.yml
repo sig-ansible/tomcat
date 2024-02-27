@@ -1,0 +1,9 @@
+---
+name: tomcat
+namespace: sig-ansible
+version: 2.0.0
+authors:
+  - Dan Boitnott <boitnott@sigcorp.com>
+
+readme: ""
+role_name_check: 1

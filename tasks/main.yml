@@ -118,7 +118,7 @@
   template:
     src: tomcat_systemd.conf
     dest: /etc/systemd/system/{{ tomcat_service_name }}.service
-  when: ansible_service_mgr == 'systemd'
+  when: ansible_service_mgr | default(None) == 'systemd'
   notify: reload systemd
   tags: systemd
 

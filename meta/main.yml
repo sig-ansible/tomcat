@@ -4,6 +4,9 @@ allow_duplicates: yes
 galaxy_info:
   author: Dan Boitnott
   description: Installs and configures a Tomcat instance
+  role_name: tomcat
+  namespace: sig-ansible
+
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
