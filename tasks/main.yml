@@ -28,11 +28,40 @@
 - name: Check for deployment
   stat: path="{{ tomcat_root }}/{{ tomcat_creates }}"
   register: res
+  tags: always
 
 - name: Install from zip
   include_tasks: zip_install.yml
   when: not res.stat.exists
   tags: always
+
+- name: Check webapps directory
+  stat:
+    path: "{{ tomcat_root  }}/webapps"
+  register: res
+  tags: always
+
+- name: Migrate webapps directory to managed path
+  block:
+    - name: Copy directory to managed path
+      command: "mv -T '{{ tomcat_root  }}/webapps' '{{ tomcat_webapps_dir }}/'"
+  rescue:
+    - name: Error migrating tomcat webapps directory
+      fail:
+        msg: |
+          If you're seeing this message it means:
+
+            - tomcat_manage_webapps == true (default: false)
+            - tomcat_migrate_to_managed_webapps == true (default: false)
+            - {{ res.stat.path }} is a directory and is not a symlink
+
+          If the above are true, the tomcat role will attempt to "migrate" the webapps
+          directory to its "managed" location via recursively copy. This message is
+          displayed if the copy fails.
+
+            Pre-managed Path: {{ res.stat.path }}
+                Managed Path: {{ tomcat_webapps_dir }}
+  when: tomcat_manage_webapps and tomcat_migrate_to_managed_webapps and res.stat.exists and res.stat.isdir
 
 - name: Create managed webapps directory
   file:

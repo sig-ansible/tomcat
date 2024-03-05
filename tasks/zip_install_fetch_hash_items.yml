@@ -10,9 +10,7 @@
 - name: zip_install_fetch_hash_items > Extract fetched hash
   set_fact:
     tomcat__hash_fetch_res: "{{ tomcat__hash_fetch_res.results | selectattr('status', 'eq', 200) | first }}"
-  tags: always
 
 - name: zip_install_fetch_hash_items > Set tomcat_zip_hash_algorithm
   set_fact:
     tomcat_zip_hash_algorithm: "{{ tomcat__hash_fetch_res.item }}"
-  tags: always

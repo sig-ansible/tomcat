@@ -1,0 +1,16 @@
+---
+- name: Prepare
+  hosts: all
+
+  vars:
+    current_timezone: UTC
+    stage_dir: /tmp
+    tomcat_java_home: /etc/alternatives/java_sdk
+
+    tomcat_version: 8.5.99
+    tomcat_reload_systemd: no
+    tomcat_manage_webapps: no
+    tomcat_remove_delivered_apps: no
+
+  roles:
+    - tomcat

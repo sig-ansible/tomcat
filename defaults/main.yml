@@ -24,6 +24,7 @@ tomcat_group: tomcat
 tomcat_reload_systemd: yes
 
 tomcat_manage_webapps: no
+tomcat_migrate_to_managed_webapps: no
 tomcat_webapps_dir: "{{ tomcat_base }}/{{ tomcat_service_name }}_webapps"
 
 # We need to specify a timezone for Tomcat because of a bug in Oracle's JDBC
