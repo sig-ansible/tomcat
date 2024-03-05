@@ -1,0 +1,8 @@
+---
+driver:
+  name: docker
+
+platforms:
+  - name: centos8
+    image: quay.io/centos/centos:stream8
+    pre_build_image: false

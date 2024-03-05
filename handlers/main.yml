@@ -2,3 +2,4 @@
 - name: reload systemd
   systemd:
     daemon_reload: yes
+  when: tomcat_reload_systemd

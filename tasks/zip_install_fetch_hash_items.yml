@@ -1,0 +1,18 @@
+---
+- name: zip_install_fetch_hash_items > Fetch zip hashes
+  uri:
+    url: "{{ tomcat_zip_url }}.{{ item }}"
+    return_content: yes
+  loop: [ 'md5', 'sha512' ]
+  failed_when: tomcat__hash_fetch_res.status not in (200, 404)
+  register: tomcat__hash_fetch_res
+
+- name: zip_install_fetch_hash_items > Extract fetched hash
+  set_fact:
+    tomcat__hash_fetch_res: "{{ tomcat__hash_fetch_res.results | selectattr('status', 'eq', 200) | first }}"
+  tags: always
+
+- name: zip_install_fetch_hash_items > Set tomcat_zip_hash_algorithm
+  set_fact:
+    tomcat_zip_hash_algorithm: "{{ tomcat__hash_fetch_res.item }}"
+  tags: always

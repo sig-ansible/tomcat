@@ -2,6 +2,18 @@
 driver:
   name: docker
 platforms:
-  - name: instance
+  - name: centos8
     image: quay.io/centos/centos:stream8
-    pre_build_image: true
+    pre_build_image: false
+
+  - name: centos9
+    image: quay.io/centos/centos:stream9
+    pre_build_image: false
+
+  - name: alma8
+    image: almalinux:8
+    pre_build_image: false
+
+  - name: alma9
+    image: almalinux:9
+    pre_build_image: false

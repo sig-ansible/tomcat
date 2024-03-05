@@ -6,8 +6,8 @@ tomcat__major_version: "{{ tomcat_version | split('.') | first }}"
 tomcat__version_url: "{{ tomcat_mirror_base }}/tomcat-{{ tomcat__major_version }}/v{{ tomcat_version }}"
 
 tomcat_zip_url: "{{ tomcat__version_url }}/bin/apache-tomcat-{{ tomcat_version }}.zip"
-tomcat_hash_url: "{{ tomcat_zip_url }}.sha512"
-tomcat_zip_hash_algorithm: sha512
+# tomcat_hash_url: "{{ tomcat_zip_url }}.sha512"
+# tomcat_zip_hash_algorithm: sha512
 tomcat_creates: "lib/websocket-api.jar"
 tomcat_zip_root_dir: "apache-tomcat-{{ tomcat_version }}"
 tomcat_service_name: tomcat
@@ -20,6 +20,11 @@ tomcat_working_dir: "{{ tomcat_root_symlink }}/bin"
 tomcat_user: tomcat
 tomcat_user_shell: /sbin/nologin
 tomcat_group: tomcat
+
+tomcat_reload_systemd: yes
+
+tomcat_manage_webapps: no
+tomcat_webapps_dir: "{{ tomcat_base }}/{{ tomcat_service_name }}_webapps"
 
 # We need to specify a timezone for Tomcat because of a bug in Oracle's JDBC
 # driver which causes it to throw ORA-01882: timezone region  not found

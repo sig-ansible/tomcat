@@ -1,0 +1,13 @@
+---
+- name: post_install > Remove Tomcat-delivered webapps
+  file:
+    path: "{{ tomcat_root  }}/webapps/{{ item }}"
+    state: absent
+  with_items: "{{ tomcat_delivered_apps }}"
+  when: tomcat_remove_delivered_apps
+
+- name: post_install > Remove delivered webapps directory
+  file:
+    path: "{{ tomcat_root  }}/webapps"
+    state: absent
+  when: tomcat_manage_webapps

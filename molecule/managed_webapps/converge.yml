@@ -1,0 +1,16 @@
+---
+
+- name: Converge
+  hosts: all
+  gather_facts: false
+
+  vars:
+    current_timezone: UTC
+    stage_dir: /tmp
+    tomcat_java_home: /etc/alternatives/java_sdk
+
+    tomcat_version: 8.5.99
+    tomcat_manage_webapps: yes
+
+  roles:
+    - tomcat

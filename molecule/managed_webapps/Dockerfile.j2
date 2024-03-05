@@ -1,0 +1,3 @@
+FROM {{ item.image }}
+RUN dnf update -y \
+  & dnf install -y java-11-openjdk-devel python3-lxml

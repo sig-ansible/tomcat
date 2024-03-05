@@ -1,15 +1,8 @@
 ---
-- name: zip_install > Fetch zip hash
-  uri:
-    url: "{{ tomcat_hash_url }}"
-    return_content: yes
-  when: tomcat_zip_hash is not defined
-  register: tomcat__hash_fetch_res
-
-- name: zip_install > Register the zip hash
-  set_fact:
-    tomcat_zip_hash: "{{ tomcat_zip_hash_algorithm }}:{{ tomcat__hash_fetch_res.content | split(' ') | first }}"
-  when: tomcat_zip_hash is not defined
+- name: Fetch zip hash
+  include_tasks: zip_install_fetch_hash.yml
+  when: not (tomcat_zip_hash | default(false))
+  tags: always
 
 # TODO: Stop using tomcat_inst_name and use the original zip file name. The way
 #       it is, it'll re-download the file if there are multiple Tomcat instances
@@ -49,9 +42,4 @@
     path: "{{ tempdir.path }}"
     state: absent
 
-- name: zip_install > Remove Tomcat-delivered webapps
-  file:
-    path: "{{ tomcat_root  }}/webapps/{{ item }}"
-    state: absent
-  with_items: "{{ tomcat_delivered_apps }}"
-  when: tomcat_remove_delivered_apps
+- import_tasks: post_install.yml

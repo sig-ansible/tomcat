@@ -29,14 +29,33 @@
   stat: path="{{ tomcat_root }}/{{ tomcat_creates }}"
   register: res
 
-- include_tasks: zip_install.yml
+- name: Install from zip
+  include_tasks: zip_install.yml
   when: not res.stat.exists
+  tags: always
+
+- name: Create managed webapps directory
+  file:
+    path: "{{ tomcat_webapps_dir }}"
+    state: directory
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+    mode: "0755"
+  when: tomcat_manage_webapps
+
+- name: Create webapps symlink
+  file:
+    src: "{{ tomcat_webapps_dir }}"
+    dest: "{{ tomcat_root }}/webapps"
+    state: link
+  when: tomcat_manage_webapps
 
 - name: Create service symlink
   file:
     src: "{{ tomcat_root }}"
     dest: "{{ tomcat_root_symlink }}"
     state: link
+    mode: '0700'
 
 - name: Find Tomcat scripts
   find: paths="{{ tomcat_root }}/bin" patterns="*.sh"

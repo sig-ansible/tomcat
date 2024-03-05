@@ -1,0 +1,17 @@
+---
+# If `tomcat_hash_url` has been provided, then use it.
+- name: zip_install_fetch_hash > Fetch zip hash (predefined)
+  uri:
+    url: "{{ tomcat_hash_url }}"
+    return_content: yes
+  when: tomcat_hash_url is defined
+  register: tomcat__hash_fetch_res
+
+# If `tomcat_hash_url` has not been provided, try computing the hash URL.
+- include_tasks: zip_install_fetch_hash_items.yml
+  when: tomcat_hash_url is not defined
+  tags: always
+
+- name: zip_install_fetch_hash > Set tomcat_zip_hash
+  set_fact:
+    tomcat_zip_hash: "{{ tomcat_zip_hash_algorithm }}:{{ tomcat__hash_fetch_res.content | split(' ') | first }}"
