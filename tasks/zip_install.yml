@@ -1,5 +1,5 @@
 ---
-- name: Fetch zip hash
+- name: zip_install > Fetch zip hash
   include_tasks: zip_install_fetch_hash.yml
   when: not (tomcat_zip_hash | default(false))
   tags: always
