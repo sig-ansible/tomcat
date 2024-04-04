@@ -103,6 +103,14 @@
     mode: "0755"
   tags: tomcat_conf
 
+- name: Set permissions for Tomcat directory
+  file:
+    path: "{{ tomcat_root }}"
+    state: directory
+    owner: "root"
+    group: tomcat
+    mode: "0755"
+
 - name: Set permissions for Tomcat directories
   file:
     path: "{{ tomcat_root }}/{{ item }}"
